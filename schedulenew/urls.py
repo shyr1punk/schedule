@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from schedule.views import dbTest, updateGroups, insertGroup
+from schedule.views import updateGroups, insertGroup
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
