@@ -10,7 +10,7 @@ class Faculty(models.Model):
 
 
 class Subject(models.Model):
-    subj_full = models.CharField(max_length=30)
+    subj_full = models.CharField(max_length=100)
     subj_short = models.CharField(max_length=10)
 
     def __unicode__(self):
