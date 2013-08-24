@@ -3,13 +3,13 @@ __author__ = 'shyr1punk'
 
 import datetime
 import xlrd
-from schedule.models import Faculty, Group, Lesson, Speciality, Subject, Teacher
+from schedule.models import Faculty, Group, Lesson, Speciality, Subject, Teacher, Type
 
 
 class Parser():
 
-    def __init__(self, group, url):
-        self.group = group
+    def __init__(self, groupID, url):
+        self.id = groupID
         self.url = url
 
     def parse(self):
@@ -84,12 +84,13 @@ class Parser():
                                 if e == ds:
                                     days.remove(ds)
 
-                daystr = u''
-                for d in days:
-                    daystr += str(d) + '   '
-                array.append([str(number), week, predmet, lestype, prep, audit, days])
-                find.append(str(number) + week + predmet + lestype + prep + audit + sdays)
-                find.append(daystr)
+                self.writeLesson(lestype, predmet, prep, days, number, audit)
+                #daystr = u''
+                #for d in days:
+                #    daystr += str(d) + '   '
+                #array.append([str(number), week, predmet, lestype, prep, audit, days])
+                #find.append(str(number) + week + predmet + lestype + prep + audit + sdays)
+                #find.append(daystr)
 
     def writeLesson(self, lestype, predmet, prep, days, number, audit):
     # Определяем индекс типа занятия (их 3, поэтому определяем их заранее)
@@ -105,23 +106,23 @@ class Parser():
                     dblestype = 1
 
         #Ищем предмет в БД или создаём новый
-        subj = Subject.objects.filter(subj_full=predmet)
-        if not subj:
+        try:
+            subj = Subject.objects.get(subj_full=predmet)
+        except Subject.DoesNotExist:
             dbSubject = Subject(
                 subj_full=predmet,
                 subj_short='',
-                )
+            )
             dbSubject.save()
             subj = dbSubject
 
         #Преподаватель
-        teacher = Teacher.objects.filter(name=predmet)
-        if not teacher:
+        try:
+            teacher = Teacher.objects.get(name=prep)
+        except Teacher.DoesNotExist:
             dbTeacher = Teacher(
-                academic_degree=1,
-                academic_title=1,
                 name=prep,
-                )
+            )
             dbTeacher.save()
             teacher = dbTeacher
 
@@ -129,10 +130,10 @@ class Parser():
             dbLesson = Lesson(
                 number=number,
                 date=day,
-                subject=subj.id,
-                teacher=teacher.id,
-                lesson_type=dblestype,
-                group=1,
+                subject=subj,
+                teacher=teacher,
+                lesson_type=Type.objects.get(id=dblestype),
+                group=Group.objects.get(id=self.id),
                 auditory=audit,
-                )
+            )
             dbLesson.save()

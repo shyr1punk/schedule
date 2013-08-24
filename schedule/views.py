@@ -19,5 +19,7 @@ def updateGroups(request):
 def insertGroup(request, groupID):
     upd = updater.Updater()
     group = upd.getGroup(groupID)
+    upd = updater.Updater()
+    upd.parseGroup(group.id, '/home/shyr1punk/evm.xls')
     url = group.url
     return render_to_response('insertgroup.html', locals())
