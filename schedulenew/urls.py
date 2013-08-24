@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from schedule.views import excel_reader, dbTest
+from schedule.views import dbTest, updateGroups, insertGroup
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -15,6 +15,6 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^xls/$', excel_reader),
-    url(r'^dbtest/$', dbTest),
+    url(r'^updategroups/$', updateGroups),
+    url(r'^insertGroup/id(\d{1,2})/$', insertGroup),
 )
