@@ -20,7 +20,7 @@ class Updater:
 
     def parseGroup(self, group, url):
         parserFile = parser.Parser(group, url)
-        parserFile.parse()
+        return parserFile.parse()
 
     def deleteGroup(self):
         Lesson.objects.filter(id=id).delete()

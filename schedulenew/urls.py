@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from schedule.views import updateGroups, insertGroup
+from schedule.views import updateGroups, insertGroup, getSchedule, getJSON
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -17,4 +17,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^updategroups/$', updateGroups),
     url(r'^insertGroup/id(\d{1,2})/$', insertGroup),
+    url(r'^schedule/group(\d{1,2})/(\d{1,2})/(\d{1,2})/(\d{2,4})/$', getSchedule),
+    url(r'^json/$', getJSON),
 )

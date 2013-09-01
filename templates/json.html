@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>getJSON</title>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#get').click(function() {
+                $.getJSON('http://127.0.0.1:8000/schedule/group11/15/10/2013/', function(data) {
+                    console.log(data);
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <a id="get">getJSON</a>
+</body>
+</html>

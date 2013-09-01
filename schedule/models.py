@@ -10,7 +10,7 @@ class Faculty(models.Model):
 
 
 class Subject(models.Model):
-    subj_full = models.CharField(max_length=100)
+    subj_full = models.CharField(max_length=200)
     subj_short = models.CharField(max_length=10)
 
     def __unicode__(self):
@@ -38,7 +38,6 @@ class Group(models.Model):
     title = models.CharField(max_length=10)
     course = models.IntegerField()
     spec = models.ForeignKey(Speciality)
-    url = models.URLField()
 
     def __unicode__(self):
         return u'ID: %d, Title: %s, course: %s, speciality: %s' % \
