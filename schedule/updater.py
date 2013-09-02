@@ -19,6 +19,7 @@ class Updater:
         return self.groups
 
     def parseGroup(self, group, url):
+        Lesson.objects.filter(group_id=group).delete()
         parserFile = parser.Parser(group, url)
         return parserFile.parse()
 
