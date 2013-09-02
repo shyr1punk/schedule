@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, include, url
 from schedule.views import updateGroups, insertGroup, getSchedule, getJSON
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -20,3 +22,5 @@ urlpatterns = patterns('',
     url(r'^schedule/group(\d{1,2})/(\d{1,2})/(\d{1,2})/(\d{2,4})/$', getSchedule),
     url(r'^json/$', getJSON),
 )
+
+urlpatterns += staticfiles_urlpatterns()

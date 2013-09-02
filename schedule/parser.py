@@ -15,10 +15,10 @@ class Parser():
 
     def parse(self):
         xls = urllib.urlopen(self.url)
-        f = open('/home/shyr1punk/temp.xls', 'w')
+        f = open('/var/www/shyr1punk/data/temp.xls', 'w')
         f.write(xls.read())
         f.close()
-        rb = xlrd.open_workbook('/home/shyr1punk/temp.xls')
+        rb = xlrd.open_workbook('/var/www/shyr1punk/data/temp.xls')
         sheets = [0, 2, 3]
         #table = []
         for sheetnum in sheets:
@@ -83,7 +83,7 @@ class Parser():
                     #tablerow = [lestype, predmet, prep, days, number, audit]
                     #table.append(tablerow)
                     self.writeLesson(lestype, predmet, prep, days, number, audit)
-        return table
+        #return table
 
     def writeLesson(self, lestype, predmet, prep, days, number, audit):
     # Определяем индекс типа занятия (их 3, поэтому определяем их заранее)
