@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from schedule.views import updateGroups, insertGroup, getSchedule, getJSON
+from schedule.views import updateGroups, insertGroup, getSchedule, getJSON, autoUpdater
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^insertGroup/id(\d{1,2})/$', insertGroup),
     url(r'^schedule/group(\d{1,2})/(\d{1,2})/(\d{1,2})/(\d{2,4})/$', getSchedule),
     url(r'^json/$', getJSON),
+    url(r'^autoupdate/$', autoUpdater),
 )
 
 urlpatterns += staticfiles_urlpatterns()

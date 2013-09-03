@@ -4,7 +4,7 @@ __author__ = 'shyr1punk'
 import datetime
 import xlrd
 import urllib
-from schedule.models import Group, Lesson, Subject, Teacher, Type
+from schedule.models import Group, Lesson, Subject, Teacher, Type, Auditory
 
 
 class Parser():
@@ -115,12 +115,22 @@ class Parser():
             dbSubject.save()
             subj = dbSubject
 
+        #Аудитория
+        try:
+            auditory = Auditory.objects.get(title=audit)
+        except Teacher.DoesNotExist:
+            dbAuditory = Teacher(
+                title=audit,
+            )
+            dbAuditory.save()
+            auditory = dbAuditory
+
         #Преподаватель
         try:
             teacher = Teacher.objects.get(name=prep)
         except Teacher.DoesNotExist:
             dbTeacher = Teacher(
-                name=prep,
+                title=prep,
             )
             dbTeacher.save()
             teacher = dbTeacher
@@ -133,6 +143,6 @@ class Parser():
                 teacher=teacher,
                 lesson_type=Type.objects.get(id=dblestype),
                 group=Group.objects.get(id=self.id),
-                auditory=audit,
+                auditory=auditory,
             )
             dbLesson.save()

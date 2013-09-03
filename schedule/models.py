@@ -38,6 +38,7 @@ class Group(models.Model):
     title = models.CharField(max_length=10)
     course = models.IntegerField()
     spec = models.ForeignKey(Speciality)
+    updated = models.DateTimeField(null=True, blank=True, editable=False)
 
     def __unicode__(self):
         return u'ID: %d, Title: %s, course: %s, speciality: %s' % \
@@ -48,8 +49,7 @@ class Teacher(models.Model):
     name = models.CharField(max_length=50)
 
     def __unicode__(self):
-        return u'ID: %d, name: %s' % \
-            (self.id, self.name)
+        return u'ID: %d, name: %s' % (self.id, self.name)
 
 
 class Lesson(models.Model):
@@ -59,9 +59,16 @@ class Lesson(models.Model):
     teacher = models.ForeignKey(Teacher)
     lesson_type = models.ForeignKey(Type)
     group = models.ForeignKey(Group)
-    auditory = models.CharField(max_length=10)
+    auditory = models.ForeignKey(Auditory)
 
     def __unicode__(self):
         return u'ID %d, number: %s, date: %s, subject: %s, teacher: %s, type: %s, group: %s, auditory: %s ' % \
                (self.id, self.number, self.date, self.subject.subj_full, self.teacher.name,
                 self.lesson_type.type_full, self.group.title, self.auditory)
+
+
+class Auditory(models.Model):
+    title = models.CharField(max_length=20)
+
+    def __unicode__(self):
+        return u'ID: %d. %s' % (self.id, self.title)
