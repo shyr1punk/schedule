@@ -130,7 +130,7 @@ class Parser():
             teacher = Teacher.objects.get(name=prep)
         except Teacher.DoesNotExist:
             dbTeacher = Teacher(
-                title=prep,
+                name=prep,
             )
             dbTeacher.save()
             teacher = dbTeacher
