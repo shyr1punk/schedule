@@ -118,8 +118,8 @@ class Parser():
         #Аудитория
         try:
             auditory = Auditory.objects.get(title=audit)
-        except Teacher.DoesNotExist:
-            dbAuditory = Teacher(
+        except Auditory.DoesNotExist:
+            dbAuditory = Auditory(
                 title=audit,
             )
             dbAuditory.save()
