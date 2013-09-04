@@ -25,7 +25,7 @@ class Response:
                 'number': row.number,
                 'title': row.subject.subj_full,
                 'teacher': row.teacher.name,
-                'auditory': row.auditory,
+                'auditory': row.auditory.title,
                 'type': row.lesson_type.type_full,
                 'date': str(row.date),
             })
