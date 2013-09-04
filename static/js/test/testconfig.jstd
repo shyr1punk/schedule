@@ -1,0 +1,4 @@
+load:
+  - ../gears/gears.js
+test:
+  - ../tests/test.js

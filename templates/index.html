@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta property="og:image" content="http://www.eng.biu.ac.il/meo/files/2013/03/schedule-icon.jpg"/>
+    <meta property="og:title" content="Учебное расписание МГТУ ГА"/>
+    <meta property="og:description" content="Расписание для группы ЭВМ 4-2 с 3 июня по 8 июня"/>
+    <title>Учебное расписание МГТУ ГА</title>
+    <link href="{{ STATIC_URL }}/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="{{ STATIC_URL }}/static/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/static/css/sticky-footer-navbar.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/static/css/no-more-tables.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/static/css/styles.css"/>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="{{ STATIC_URL }}/assets/js/html5shiv.js"></script>
+    <script src="{{ STATIC_URL }}/assets/js/respond.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <![endif]-->
+</head>
+<body onload="General.init();">
+<!-- Wrap all page content here -->
+<div id="wrap">
+<!-- Fixed navbar -->
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Учебное расписание МГТУ ГА</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <p class="navbar-text pull-right">
+                <span id="Timer" class="hidden-xs">0:00</span>
+            </p>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#weekSchedule">Недельное расписание</a></li>
+                <li><a href="#dateSchedule"  data-toggle="pill">Поиск по дате</a></li>
+                <li><a href="#teacherSchedule">Поиск по преподавателю</a></li>
+            </ul>
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Быстрый поиск">
+                </div>
+               <!-- <button type="submit" class="btn btn-default">Submit</button>-->
+            </form>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</div>
+
+<!-- Begin page content -->
+<div class="container">
+    <!--<div class="span12" style="padding-top: 5px;">
+        <div class="alert alert-info">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong div id="infoTitle">Изменения в расписании!</strong>
+            <span id="infoContent">Перенесена лекция проф. Рудельсон Л.Е. с 3.06 на 12.06.</span>
+        </div>
+    </div>  -->
+</div>
+<div class="container-fluid" role="main">
+<div class="row-fluid">
+<div class="col-md-9 well">
+<div id="weekSchedule">
+<section>
+<table class="table-bordered table-striped table-condensed cf hidden-xs" style="width: 100%;">
+<thead class="cf">
+<tr>
+    <th class="tablehead" style="width: 4%">№ пары</th>
+    <th class="tablehead" style="width: 16%">Понедельник <br><span class="date">24 июня</span></th>
+    <th class="tablehead" style="width: 16%">Вторник <br><span class="date">25 июня</span></th>
+    <th class="tablehead" style="width: 16%">Среда <br><span class="date">26 июня</span></th>
+    <th class="tablehead" style="width: 16%">Четверг <br><span class="date">27 июня</span></th>
+    <th class="tablehead" style="width: 16%">Пятница <br><span class="date">28 июня</span></th>
+    <th class="tablehead" style="width: 16%">Суббота <br><span class="date">29 июня</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <th data-title="№ пары" class="tableside">1</th>
+    <td class="none" data-title="Понедельник" id="Monday_1">
+        <span class="name" id="Monday_1_name"></span><br>
+        <span class="prep" id="Monday_1_prep"></span><br>
+        <span class="prep" id="Monday_1_class"></span>
+    </td>
+    <td class="none" data-title="Вторник" id="Tuesday_1">
+        <span class="name" id="Tuesday_1_name"></span><br>
+        <span class="prep" id="Tuesday_1_prep"></span><br>
+        <span class="prep" id="Tuesday_1_class"></span>
+    </td>
+    <td class="none" data-title="Среда" id="Wednesday_1">
+        <span class="name" id="Wednesday_1_name"></span><br>
+        <span class="prep" id="Wednesday_1_prep"></span><br>
+        <span class="prep" id="Wednesday_1_class"></span>
+    </td>
+    <td class="none" data-title="Четверг" id="Thursday_1">
+        <span class="name" id="Thursday_1_name"></span><br>
+        <span class="prep" id="Thursday_1_prep"></span> <br>
+        <span class="prep" id="Thursday_1_class"></span>
+
+    </td>
+    <td class="none" data-title="Пятница" id="Friday_1">
+        <span class="name" id="Friday_1_name"></span><br>
+        <span class="prep" id="Friday_1_prep"></span><br>
+        <span class="prep" id="Friday_1_class"></span>
+    </td>
+    <td class="none" data-title="Суббота" id="Saturday_1">
+        <span class="name" id="Saturday_1_name"></span><br>
+        <span class="prep" id="Saturday_1_prep"></span><br>
+        <span class="prep" id="Saturday_1_class"></span>
+
+    </td>
+</tr>
+<tr>
+    <th data-title="№ пары" class="tableside">2</th>
+    <td data-title="Понедельник" class="none" id="Monday_2">
+        <span class="name" id="Monday_2_name"></span><br>
+        <span class="prep" id="Monday_2_prep"></span><br>
+        <span class="prep" id="Monday_2_class"></span>
+
+    </td>
+    <td data-title="Вторник" class="none" id="Tuesday_2">
+        <span class="name" id="Tuesday_2_name"></span><br>
+        <span class="prep" id="Tuesday_2_prep"></span><br>
+        <span class="prep" id="Tuesday_2_class"></span>
+
+    </td>
+    <td data-title="Среда" class="none" id="Wednesday_2">
+        <span class="name" id="Wednesday_2_name"></span><br>
+        <span class="prep" id="Wednesday_2_prep"></span><br>
+        <span class="prep" id="Wednesday_2_class"></span>
+    </td>
+    <td data-title="Четверг" class="none" id="Thursday_2">
+        <span class="name" id="Thursday_2_name"></span><br>
+        <span class="prep" id="Thursday_2_prep"></span><br>
+        <span class="prep" id="Thursday_2_class"></span>
+    </td>
+    <td data-title="Пятница" class="none" id="Friday_2">
+        <span class="name" id="Friday_2_name"></span><br>
+        <span class="prep" id="Friday_2_prep"></span><br>
+        <span class="prep" id="Friday_2_class"></span>
+    </td>
+    <td data-title="Суббота" class="none" id="Saturday_2">
+        <span class="name" id="Saturday_2_name"></span><br>
+        <span class="prep" id="Saturday_2_prep"></span><br>
+        <span class="prep" id="Saturday_2_class"></span>
+    </td>
+</tr>
+<tr>
+    <th data-title="№ пары" class="tableside">3</th>
+    <td data-title="Понедельник" class="none" id="Monday_3">
+        <span class="name" id="Monday_3_name"></span><br>
+        <span class="prep" id="Monday_3_prep"></span><br>
+        <span class="prep" id="Monday_3_class"></span>
+    </td>
+    <td data-title="Вторник" class="none" id="Tuesday_3">
+        <span class="name" id="Tuesday_3_name"></span><br>
+        <span class="prep" id="Tuesday_3_prep"></span><br>
+        <span class="prep" id="Tuesday_3_class"></span>
+    </td>
+    <td data-title="Среда" class="none" id="Wednesday_3">
+        <span class="name" id="Wednesday_3_name"></span><br>
+        <span class="prep" id="Wednesday_3_prep"></span><br>
+        <span class="prep" id="Wednesday_3_class"></span>
+    </td>
+    <td data-title="Четверг" class="none" id="Thursday_3">
+        <span class="name" id="Thursday_3_name"></span><br>
+        <span class="prep" id="Thursday_3_prep"></span><br>
+        <span class="prep" id="Thursday_3_class"></span>
+    </td>
+    <td data-title="Пятница" class="none" id="Friday_3">
+        <span class="name" id="Friday_3_name"></span><br>
+        <span class="prep" id="Friday_3_prep"></span><br>
+        <span class="prep" id="Friday_3_class"></span>
+
+    </td>
+    <td data-title="Суббота" class="none" id="Saturday_3">
+        <span class="name" id="Saturday_3_name"></span><br>
+        <span class="prep" id="Saturday_3_prep"></span><br>
+        <span class="prep" id="Saturday_3_class"></span>
+    </td>
+</tr>
+<tr>
+    <th data-title="№ пары" class="tableside">4</th>
+    <td data-title="Понедельник" class="none" id="Monday_4">
+        <span class="name" id="Monday_4_name"></span><br>
+        <span class="prep" id="Monday_4_prep"></span><br>
+        <span class="prep" id="Monday_4_class"></span>
+    </td>
+    <td data-title="Вторник" class="none" id="Tuesday_4">
+        <span class="name" id="Tuesday_4_name"></span><br>
+        <span class="prep" id="Tuesday_4_prep"></span><br>
+        <span class="prep" id="Tuesday_4_class"></span>
+    </td>
+    <td data-title="Среда" class="none" id="Wednesday_4">
+        <span class="name" id="Wednesday_4_name"></span><br>
+        <span class="prep" id="Wednesday_4_prep"></span><br>
+        <span class="prep" id="Wednesday_4_class"></span>
+    </td>
+    <td data-title="Четверг" class="none" id="Thursday_4">
+        <span class="name" id="Thursday_4_name"></span><br>
+        <span class="prep" id="Thursday_4_prep"></span><br>
+        <span class="prep" id="Thursday_4_class"></span>
+    </td>
+    <td data-title="Пятница" class="none" id="Friday_4">
+        <span class="name" id="Friday_4_name"></span><br>
+        <span class="prep" id="Friday_4_prep"></span><br>
+        <span class="prep" id="Friday_4_class"></span>
+
+    </td>
+    <td data-title="Суббота" class="none" id="Saturday_4">
+        <span class="name" id="Saturday_4_name"></span><br>
+        <span class="prep" id="Saturday_4_prep"></span><br>
+        <span class="prep" id="Saturday_4_class"></span>
+    </td>
+</tr>
+<tr>
+    <th data-title="№ пары" class="tableside">5</th>
+    <td data-title="Понедельник" class="none" id="Monday_5">
+        <span class="name" id="Monday_5_name"></span><br>
+        <span class="prep" id="Monday_5_prep"></span><br>
+        <span class="prep" id="Monday_5_class"></span>
+    </td>
+    <td data-title="Вторник" class="none" id="Tuesday_5">
+        <span class="name" id="Tuesday_5_name"></span><br>
+        <span class="prep" id="Tuesday_5_prep"></span><br>
+        <span class="prep" id="Tuesday_5_class"></span>
+    </td>
+    <td data-title="Среда" class="none" id="Wednesday_5">
+        <span class="name" id="Wednesday_5_name"></span><br>
+        <span class="prep" id="Wednesday_5_prep"></span><br>
+        <span class="prep" id="Wednesday_5_class"></span>
+    </td>
+    <td data-title="Четверг" class="none" id="Thursday_5">
+        <span class="name" id="Thursday_5_name"></span><br>
+        <span class="prep" id="Thursday_5_prep"></span><br>
+        <span class="prep" id="Thursday_5_class"></span>
+    </td>
+    <td data-title="Пятница" class="none" id="Friday_5">
+        <span class="name" id="Friday_5_name"></span><br>
+        <span class="prep" id="Friday_5_prep"></span><br>
+        <span class="prep" id="Friday_5_class"></span>
+    </td>
+    <td data-title="Суббота" class="none" id="Saturday_5">
+        <span class="name" id="Saturday_5_name"></span><br>
+        <span class="prep" id="Saturday_5_prep"></span><br>
+        <span class="prep" id="Saturday_5_class"></span>
+    </td>
+</tr>
+<tr>
+    <th data-title="№ пары" class="tableside">6</th>
+    <td data-title="Понедельник" class="none" id="Monday_6">
+        <span class="name" id="Monday_6_name"></span><br>
+        <span class="prep" id="Monday_6_prep"></span><br>
+        <span class="prep" id="Monday_6_class"></span>
+    </td>
+    <td data-title="Вторник" class="none" id="Tuesday_6">
+        <span class="name" id="Tuesday_6_name"></span><br>
+        <span class="prep" id="Tuesday_6_prep"></span><br>
+        <span class="prep" id="Tuesday_6_class"></span>
+    </td>
+    <td data-title="Среда" class="none" id="Wednesday_6">
+        <span class="name" id="Wednesday_6_name"></span><br>
+        <span class="prep" id="Wednesday_6_prep"></span><br>
+        <span class="prep" id="Wednesday_6_class"></span>
+    </td>
+    <td data-title="Четверг" class="none" id="Thursday_6">
+        <span class="name" id="Thursday_6_name"></span><br>
+        <span class="prep" id="Thursday_6_prep"></span><br>
+        <span class="prep" id="Thursday_6_class"></span>
+    </td>
+    <td data-title="Пятница" class="none" id="Friday_6">
+        <span class="name" id="Friday_6_name"></span><br>
+        <span class="prep" id="Friday_6_prep"></span><br>
+        <span class="prep" id="Friday_6_class"></span>
+    </td>
+    <td data-title="Суббота" class="none" id="Saturday_6">
+        <span class="name" id="Saturday_6_name"></span><br>
+        <span class="prep" id="Saturday_6_prep"></span><br>
+        <span class="prep" id="Saturday_6_class"></span>
+    </td>
+</tr>
+</tbody>
+</table>
+</section>
+
+<section id="no-more-tables">
+<table class="table-bordered table-striped table-condensed cf visible-xs" style="width: 100%;">
+<thead class="cf">
+<tr>
+    <th class="numeric"></th>
+    <th>1 пара</th>
+    <th>2 пара</th>
+    <th>3 пара</th>
+    <th>4 пара</th>
+    <th>5 пара</th>
+    <th>6 пара</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td data-title="" class="nameday">Понедельник<a name="Monday"></a></td>
+    <td data-title="1 пара" class="none" id="Monday_1_mobile">
+        <span class="name" id="Monday_1_name_mobile"></span><br>
+        <span class="prep" id="Monday_1_prep_mobile"></span><br>
+        <span class="prep" id="Monday_1_class_mobile"></span>
+    </td>
+    <td data-title="2 пара" class="none" id="Monday_2_mobile">
+        <span class="name" id="Monday_2_name_mobile"></span><br>
+        <span class="prep" id="Monday_2_prep_mobile"></span><br>
+        <span class="prep" id="Monday_2_class_mobile"></span>
+    </td>
+    <td data-title="3 пара" class="none" id="Monday_3_mobile">
+        <span class="name" id="Monday_3_name_mobile"></span><br>
+        <span class="prep" id="Monday_3_prep_mobile"></span><br>
+        <span class="prep" id="Monday_3_class_mobile"></span>
+    </td>
+    <td data-title="4 пара" class="none" id="Monday_4_mobile">
+        <span class="name" id="Monday_4_name_mobile"></span><br>
+        <span class="prep" id="Monday_4_prep_mobile"></span><br>
+        <span class="prep" id="Monday_4_class_mobile"></span>
+    </td>
+    <td data-title="5 пара" class="none" id="Monday_5_mobile">
+        <span class="name" id="Monday_5_name_mobile"></span><br>
+        <span class="prep" id="Monday_5_prep_mobile"></span><br>
+        <span class="prep" id="Monday_5_class_mobile"></span>
+    </td>
+    <td data-title="6 пара" class="none" id="Monday_6_mobile">
+        <span class="name" id="Monday_6_name_mobile"></span><br>
+        <span class="prep" id="Monday_6_prep_mobile"></span><br>
+        <span class="prep" id="Monday_6_class_mobile"></span>
+    </td>
+</tr>
+
+<tr>
+    <td data-title="" class="nameday">Вторник<a name="Tuesday"></a></td>
+    <td data-title="1 пара" class="none" id="Tuesday_1_mobile">
+        <span class="name" id="Tuesday_1_name_mobile"></span><br>
+        <span class="prep" id="Tuesday_1_prep_mobile"></span><br>
+        <span class="prep" id="Tuesday_1_class_mobile"></span>
+    </td>
+    <td data-title="2 пара" class="none" id="Tuesday_2_mobile">
+        <span class="name" id="Tuesday_2_name_mobile"></span><br>
+        <span class="prep" id="Tuesday_2_prep_mobile"></span><br>
+        <span class="prep" id="Tuesday_2_class_mobile"></span>
+    </td>
+    <td data-title="3 пара" class="none" id="Tuesday_3_mobile">
+        <span class="name" id="Tuesday_3_name_mobile"></span><br>
+        <span class="prep" id="Tuesday_3_prep_mobile"></span><br>
+        <span class="prep" id="Tuesday_3_class_mobile"></span>
+    </td>
+    <td data-title="4 пара" class="none" id="Tuesday_4_mobile">
+        <span class="name" id="Tuesday_4_name_mobile"></span><br>
+        <span class="prep" id="Tuesday_4_prep_mobile"></span><br>
+        <span class="prep" id="Tuesday_4_class_mobile"></span>
+    </td>
+    <td data-title="5 пара" class="none" id="Tuesday_5_mobile">
+        <span class="name" id="Tuesday_5_name_mobile"></span><br>
+        <span class="prep" id="Tuesday_5_prep_mobile"></span><br>
+        <span class="prep" id="Tuesday_5_class_mobile"></span>
+    </td>
+    <td data-title="6 пара" class="none" id="Tuesday_6_mobile">
+        <span class="name" id="Tuesday_6_name_mobile"></span><br>
+        <span class="prep" id="Tuesday_6_prep_mobile"></span><br>
+        <span class="prep" id="Tuesday_6_class_mobile"></span>
+    </td>
+</tr>
+
+<tr>
+    <td data-title="" class="nameday">Среда<a name="Wednesday"></a></td>
+    <td data-title="1 пара" class="none" id="Wednesday_1_mobile">
+        <span class="name" id="Wednesday_1_name_mobile"></span><br>
+        <span class="prep" id="Wednesday_1_prep_mobile"></span><br>
+        <span class="prep" id="Wednesday_1_class_mobile"></span>
+    </td>
+    <td data-title="2 пара" class="none" id="Wednesday_2_mobile">
+        <span class="name" id="Wednesday_2_name_mobile"></span><br>
+        <span class="prep" id="Wednesday_2_prep_mobile"></span><br>
+        <span class="prep" id="Wednesday_2_class_mobile"></span>
+    </td>
+    <td data-title="3 пара" class="none" id="Wednesday_3_mobile">
+        <span class="name" id="Wednesday_3_name_mobile"></span><br>
+        <span class="prep" id="Wednesday_3_prep_mobile"></span><br>
+        <span class="prep" id="Wednesday_3_class_mobile"></span>
+    </td>
+    <td data-title="4 пара" class="none" id="Wednesday_4_mobile">
+        <span class="name" id="Wednesday_4_name_mobile"></span><br>
+        <span class="prep" id="Wednesday_4_prep_mobile"></span><br>
+        <span class="prep" id="Wednesday_4_class_mobile"></span>
+    </td>
+    <td data-title="5 пара" class="none" id="Wednesday_5_mobile">
+        <span class="name" id="Wednesday_5_name_mobile"></span><br>
+        <span class="prep" id="Wednesday_5_prep_mobile"></span><br>
+        <span class="prep" id="Wednesday_5_class_mobile"></span>
+    </td>
+    <td data-title="6 пара" class="none" id="Wednesday_6_mobile">
+        <span class="name" id="Wednesday_6_name_mobile"></span><br>
+        <span class="prep" id="Wednesday_6_prep_mobile"></span><br>
+        <span class="prep" id="Wednesday_6_class_mobile"></span>
+    </td>
+</tr>
+
+<tr>
+    <td data-title="" class="nameday">Четверг<a name="Thursday"></a></td>
+    <td data-title="1 пара" class="none" id="Thursday_1_mobile">
+        <span class="name" id="Thursday_1_name_mobile"></span><br>
+        <span class="prep" id="Thursday_1_prep_mobile"></span><br>
+        <span class="prep" id="Thursday_1_class_mobile"></span>
+    </td>
+    <td data-title="2 пара" class="none" id="Thursday_2_mobile">
+        <span class="name" id="Thursday_2_name_mobile"></span><br>
+        <span class="prep" id="Thursday_2_prep_mobile"></span><br>
+        <span class="prep" id="Thursday_2_class_mobile"></span>
+    </td>
+    <td data-title="3 пара" class="none" id="Thursday_3_mobile">
+        <span class="name" id="Thursday_3_name_mobile"></span><br>
+        <span class="prep" id="Thursday_3_prep_mobile"></span><br>
+        <span class="prep" id="Thursday_3_class_mobile"></span>
+    </td>
+    <td data-title="4 пара" class="none" id="Thursday_4_mobile">
+        <span class="name" id="Thursday_4_name_mobile"></span><br>
+        <span class="prep" id="Thursday_4_prep_mobile"></span><br>
+        <span class="prep" id="Thursday_4_class_mobile"></span>
+    </td>
+    <td data-title="5 пара" class="none" id="Thursday_5_mobile">
+        <span class="name" id="Thursday_5_name_mobile"></span><br>
+        <span class="prep" id="Thursday_5_prep_mobile"></span><br>
+        <span class="prep" id="Thursday_5_class_mobile"></span>
+    </td>
+    <td data-title="6 пара" class="none" id="Thursday_6_mobile">
+        <span class="name" id="Thursday_6_name_mobile"></span><br>
+        <span class="prep" id="Thursday_6_prep_mobile"></span><br>
+        <span class="prep" id="Thursday_6_class_mobile"></span>
+    </td>
+</tr>
+
+<tr>
+    <td data-title="" class="nameday">Пятница<a name="Friday"></a></td>
+    <td data-title="1 пара" class="none" id="Friday_1_mobile">
+        <span class="name" id="Friday_1_name_mobile"></span><br>
+        <span class="prep" id="Friday_1_prep_mobile"></span><br>
+        <span class="prep" id="Friday_1_class_mobile"></span>
+    </td>
+    <td data-title="2 пара" class="none" id="Friday_2_mobile">
+        <span class="name" id="Friday_2_name_mobile"></span><br>
+        <span class="prep" id="Friday_2_prep_mobile"></span><br>
+        <span class="prep" id="Friday_2_class_mobile"></span>
+    </td>
+    <td data-title="3 пара" class="none" id="Friday_3_mobile">
+        <span class="name" id="Friday_3_name_mobile"></span><br>
+        <span class="prep" id="Friday_3_prep_mobile"></span><br>
+        <span class="prep" id="Friday_3_class_mobile"></span>
+    </td>
+    <td data-title="4 пара" class="none" id="Friday_4_mobile">
+        <span class="name" id="Friday_4_name_mobile"></span><br>
+        <span class="prep" id="Friday_4_prep_mobile"></span><br>
+        <span class="prep" id="Friday_4_class_mobile"></span>
+    </td>
+    <td data-title="5 пара" class="none" id="Friday_5_mobile">
+        <span class="name" id="Friday_5_name_mobile"></span><br>
+        <span class="prep" id="Friday_5_prep_mobile"></span><br>
+        <span class="prep" id="Friday_5_class_mobile"></span>
+    </td>
+    <td data-title="6 пара" class="none" id="Friday_6_mobile">
+        <span class="name" id="Friday_6_name_mobile"></span><br>
+        <span class="prep" id="Friday_6_prep_mobile"></span><br>
+        <span class="prep" id="Friday_6_class_mobile"></span>
+    </td>
+</tr>
+
+<tr>
+    <td data-title="" class="nameday">Суббота<a name="Saturday"></a></td>
+    <td data-title="1 пара" class="none" id="Saturday_1_mobile">
+        <span class="name" id="Saturday_1_name_mobile"></span><br>
+        <span class="prep" id="Saturday_1_prep_mobile"></span><br>
+    </td>
+    <span class="prep" id="Saturday_1_class_mobile"></span>
+    <td data-title="2 пара" class="none" id="Saturday_2_mobile">
+        <span class="name" id="Saturday_2_name_mobile"></span><br>
+        <span class="prep" id="Saturday_2_prep_mobile"></span><br>
+        <span class="prep" id="Saturday_2_class_mobile"></span>
+    </td>
+    <td data-title="3 пара" class="none" id="Saturday_3_mobile">
+        <span class="name" id="Saturday_3_name_mobile"></span><br>
+        <span class="prep" id="Saturday_3_prep_mobile"></span><br>
+        <span class="prep" id="Saturday_3_class_mobile"></span>
+    </td>
+    <td data-title="4 пара" class="none" id="Saturday_4_mobile">
+        <span class="name" id="Saturday_4_name_mobile"></span><br>
+        <span class="prep" id="Saturday_4_prep_mobile"></span><br>
+        <span class="prep" id="Saturday_4_class_mobile"></span>
+    </td>
+    <td data-title="5 пара" class="none" id="Saturday_5_mobile">
+        <span class="name" id="Saturday_5_name_mobile"></span><br>
+        <span class="prep" id="Saturday_5_prep_mobile"></span><br>
+        <span class="prep" id="Saturday_5_class_mobile"></span>
+    </td>
+    <td data-title="6 пара" class="none" id="Saturday_6_mobile">
+        <span class="name" id="Saturday_6_name_mobile"></span><br>
+        <span class="prep" id="Saturday_6_prep_mobile"></span><br>
+        <span class="prep" id="Saturday_6_class_mobile"></span>
+    </td>
+</tr>
+
+</tbody>
+</table>
+</section>
+
+<!--/span-->
+<br>
+<div style="text-align: right;">
+    <span class="label label-success">Лекция</span>
+    <span class="label label-info">Практика</span>
+    <span class="label label-warning">Лабораторные занятия</span>
+</div>
+<br>
+<!--<div class="col-md-11 well hidden-xs" id="map"></div>-->
+</div>
+<!--/row-->
+<div id="dateSchedule" style="display: none;">Поиск по дате<br></div>
+<div id="teacherSchedule" style="display: none;"><input type="text" name="q" id="query" placeholder="Фамилия преподавателя"/></div>
+</div>
+
+<div class="col-md-3 well">
+    <div class="sidebar-nav">
+        <button type="button" class="btn btn-default btn-lg btn-block" onclick="LocStorage.setFac('МФ')">МФ</button>
+        <button type="button" class="btn btn-default btn-lg btn-block" onclick="LocStorage.setFac('ФАСК')">ФАСК</button>
+        <button type="button" class="btn btn-default btn-lg btn-block" onclick="LocStorage.setFac('ФУВТ')">ФУВТ</button>
+        <button type="button" class="btn btn-default btn-lg btn-block" onclick="LocStorage.setFac('ФПМиВТ')">ФПМиВТ</button>
+    </div>
+    </div>
+</div>
+<!--/span-->
+</div>
+<!--/.fluid-container-->
+</div>
+</div>
+
+<div id="footer" class="visible-lg">
+    <div class="container">
+        <p class="text-muted credit">Example courtesy <a href="http://martinbean.co.uk">Martin Bean</a> and <a
+                href="http://ryanfait.com/sticky-footer/">Ryan Fait</a>.</p>
+    </div>
+</div>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="{{ STATIC_URL }}/static/assets/js/jquery.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="{{ STATIC_URL }}/static/js/bootstrap/bootstrap.min.js"></script>
+<script src="{{ STATIC_URL }}/static/js/gears/gears.js"></script>
+</body>
+</html>

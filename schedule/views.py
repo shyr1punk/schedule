@@ -34,3 +34,7 @@ def autoUpdater(request):
     updaterClass = updater.Updater()
     result = updaterClass.autoUpdater()
     return render_to_response('autoupdateresult.html', locals())
+
+
+def index(request):
+    return render_to_response('index.html')
