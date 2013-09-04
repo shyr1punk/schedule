@@ -52,13 +52,6 @@ class Teacher(models.Model):
         return u'ID: %d, name: %s' % (self.id, self.name)
 
 
-class Auditory(models.Model):
-    title = models.CharField(max_length=20)
-
-    def __unicode__(self):
-        return u'ID: %d. %s' % (self.id, self.title)
-
-
 class Lesson(models.Model):
     number = models.IntegerField()
     date = models.DateField()
@@ -74,3 +67,8 @@ class Lesson(models.Model):
                 self.lesson_type.type_full, self.group.title, self.auditory)
 
 
+class Auditory(models.Model):
+    title = models.CharField(max_length=20)
+
+    def __unicode__(self):
+        return u'ID: %d. %s' % (self.id, self.title)
