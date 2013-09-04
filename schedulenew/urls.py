@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^updategroups/$', updateGroups),
-    url(r'^insertGroup/id(\d{1,2})/$', insertGroup),
+    url(r'^insertGroup/id(\d{1,3})/$', insertGroup),
     url(r'^schedule/group(\d{1,2})/(\d{1,2})/(\d{1,2})/(\d{2,4})/$', getSchedule),
     url(r'^json/$', getJSON),
     url(r'^autoupdate/$', autoUpdater),
