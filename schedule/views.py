@@ -4,7 +4,7 @@ __author__ = 'shyr1punk'
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponse#, Http404
-import updater  # Синтаксический анализатор
+import updater
 import requests
 
 
@@ -20,8 +20,8 @@ def insertGroup(request, groupID):
     return render_to_response('insertgroup.html', locals())
 
 
-def getSchedule(request, groupID, day, month, year):
-    req = requests.Response(groupID, day, month, year)
+def getSchedule(request, groupID, year, month, day):
+    req = requests.GetSchedule(groupID, day, month, year)
     data = req.response()
     return HttpResponse(data, content_type="application/json")
 
@@ -38,3 +38,21 @@ def autoUpdater(request):
 
 def index(request):
     return render_to_response('index.html')
+
+
+def getFaculties(request):
+    faculties = requests.GetFaculties()
+    data = faculties.response()
+    return HttpResponse(data, content_type="application/json")
+
+
+def getSpec(request, ID):
+    specialities = requests.GetSpecialities(ID)
+    data = specialities.response()
+    return HttpResponse(data, content_type="application/json")
+
+
+def getGroups(request, ID):
+    groups = requests.GetGroups(ID)
+    data = groups.response()
+    return HttpResponse(data, content_type="application/json")

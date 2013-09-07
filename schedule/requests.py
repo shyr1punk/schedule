@@ -4,11 +4,11 @@ from __builtin__ import str
 __author__ = 'shyr1punk'
 
 import datetime
-from schedule.models import Lesson
+from schedule.models import Lesson, Faculty, Speciality, Group
 import json
 
 
-class Response:
+class GetSchedule:
     def __init__(self, group, day, month, year):
         self.group = int(group)
         self.day = int(day)
@@ -28,6 +28,53 @@ class Response:
                 'auditory': row.auditory.title,
                 'type': row.lesson_type.type_full,
                 'date': str(row.date),
+            })
+        return json.dumps(data)
+
+
+class GetFaculties:
+    def __init__(self):
+        pass
+
+    def response(self):
+        rows = Faculty.objects.all()
+        data = []
+        for row in rows:
+            data.append({
+                'id': row.id,
+                'full': row.fac_full,
+                'short': row.fac_short
+            })
+        return json.dumps(data)
+
+
+class GetSpecialities:
+    def __init__(self, ID):
+        self.id = int(ID)
+
+    def response(self):
+        rows = Speciality.objects.filter(faculty_id=self.id)
+        data = []
+        for row in rows:
+            data.append({
+                'id': row.id,
+                'full': row.spec_full,
+                'short': row.spec_short
+            })
+        return json.dumps(data)
+
+
+class GetGroups:
+    def __init__(self, ID):
+        self.id = int(ID)
+
+    def response(self):
+        rows = Group.objects.filter(spec_id=self.id)
+        data = []
+        for row in rows:
+            data.append({
+                'id': row.id,
+                'title': row.title
             })
 
         return json.dumps(data)
