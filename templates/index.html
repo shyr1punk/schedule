@@ -31,7 +31,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">Учебное расписание МГТУ ГА</a>
+            <a class="navbar-brand" href="/">Учебное расписание МГТУ ГА</a>
         </div>
         <div class="collapse navbar-collapse">
             <p class="navbar-text pull-right">
@@ -68,7 +68,7 @@
 <div class="col-md-9 well">
 <div id="weekSchedule">
 <section>
-<table class="table-bordered table-striped table-condensed cf hidden-xs" style="width: 100%;">
+<table id="table" class="table-bordered table-striped table-condensed cf hidden-xs" style="width: 100%;">
 <thead class="cf">
 <tr>
     <th class="tablehead" style="width: 4%">№ пары</th>
@@ -527,11 +527,8 @@
 </div>
 
 <div class="col-md-3 well">
-    <div class="sidebar-nav">
-        <button type="button" class="btn btn-default btn-lg btn-block" onclick="LocStorage.setFac('МФ')">МФ</button>
-        <button type="button" class="btn btn-default btn-lg btn-block" onclick="LocStorage.setFac('ФАСК')">ФАСК</button>
-        <button type="button" class="btn btn-default btn-lg btn-block" onclick="LocStorage.setFac('ФУВТ')">ФУВТ</button>
-        <button type="button" class="btn btn-default btn-lg btn-block" onclick="LocStorage.setFac('ФПМиВТ')">ФПМиВТ</button>
+    <div id="menu" class="sidebar-nav">
+
     </div>
     </div>
 </div>

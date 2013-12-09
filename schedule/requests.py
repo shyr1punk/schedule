@@ -16,17 +16,17 @@ class GetSchedule:
         self.year = int(year)
 
     def response(self):
-        start_date = datetime.date(self.year, self.month, self.day)
-        end_date = start_date + datetime.timedelta(days=7)
+        response_date = datetime.date(self.year, self.month, self.day)
+        start_date = response_date - datetime.timedelta(days=response_date.weekday())
+        end_date = start_date + datetime.timedelta(days=6)
         rows = Lesson.objects.filter(group_id=self.group, date__range=(start_date, end_date))
-        data = []
+        data = [[[] for x in xrange(7)] for x in xrange(7)]
         for row in rows:
-            data.append({
-                'number': row.number,
+            data[row.date.weekday()][row.number - 1].append({
                 'title': row.subject.subj_full,
                 'teacher': row.teacher.name,
                 'auditory': row.auditory.title,
-                'type': row.lesson_type.type_full,
+                'type': row.lesson_type_id,
                 'date': str(row.date),
             })
         return json.dumps(data)

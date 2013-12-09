@@ -74,13 +74,12 @@
 }
 
 .name {
-    font-size: 15px; 
-    font-weight: bold;
+    font-size: 15px;
 }
 
 .prep {
     font-size: 10pt;
-    color: #e8e8e8;
+    color: #999999;
 }
 
 .date {
@@ -109,3 +108,13 @@ margin: 0 20px 5px 0;
 .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
 
 th {text-align:center}
+
+.tablerow {
+    height: 30px;
+}
+
+.tableday{
+    float: left;
+    width: 30%;
+    display: table;
+}

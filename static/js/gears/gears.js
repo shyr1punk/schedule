@@ -81,55 +81,34 @@ var Table = {
     /**
      * читает все пары в массив и сортирует по дням и очередности
      */
-    getData: function () {
-        var self = this;
-        $.getJSON('js/json/data.json', function (data) {
-            $.each(data, function (key, val) {
-                self.LessonsArray[key] = new ScheduleCell({
-                    daycode:        val.daycode,
-                    dayname:        val.dayname,
-                    date:           val.date,
-                    lessonnumber:   val.lessonnumber,
-                    lessontitle:    val.lessontitle,
-                    teachername:    val.teachername,
-                    classroom:      val.classroom,
-                    type:           val.type
-                });
-                self.separateDay(self.LessonsArray[key]);
-            });
-        })
-            .done(function () {
-                Table.drawWeekSchedule();
-                console.log('считали и вывели');
-            })
-            .fail(function () {
-                throw new Error("Ошибка чтения файла данных");
-            });
+    getData: function (data) {
+        var self = this,
+            i, j, k,
+            len,
+            table = '';
+        for (i = 0; i < 7; i += 1) {
+            table += '<table class="tableday table table-bordered table-striped table-condensed">';
+            for (j = 0; j < 7; j += 1) {
+                table += '<tr><td class="tablerow">';
+                len = data[i][j].length;
+                for (k = 0; k < len; k += 1) {
+                    console.log(data[i][j][k].title);
+                    table += '<div class="name">' + data[i][j][k].title + '</div>';
+                    table += '<div class="prep">' + data[i][j][k].teacher + '</div>';
+                    table += '<div class="prep">' + data[i][j][k].auditory + '</div>';
+                }
+                table += '</td></tr>';
+            }
+            table += '</table>'
+        }
+        $('#weekSchedule').html(table);
     },
 
     /**
      * выводит недельное расписание
      */
     drawWeekSchedule: function () {
-        var day, i, style;
-        for (day in Table) {
-            if (Table.hasOwnProperty(day)) {
-                for (i = 1; i < Table[day].length; i += 1) {
-                    if (Table[day][i]) {
-                        style = Table[day][i].type;   //тип пары: лекция, практика, лабы
-                        $('#' + day + '_' + i).attr('class', style);
-                        $('#' + day + '_' + i + '_name').html(Table[day][i].lessontitle);
-                        $('#' + day + '_' + i + '_prep').html(Table[day][i].teachername);
-                        $('#' + day + '_' + i + '_class').html(Table[day][i].classroom);
-                        //и мобильная версия
-                        $('#' + day + '_' + i + '_mobile').attr('class', style);
-                        $('#' + day + '_' + i + '_name' + '_mobile').html(Table[day][i].lessontitle);
-                        $('#' + day + '_' + i + '_prep' + '_mobile').html(Table[day][i].teachername);
-                        $('#' + day + '_' + i + '_class' + '_mobile').html(Table[day][i].classroom);
-                    }
-                }
-            }
-        }
+
     }
 };
 
@@ -205,19 +184,67 @@ var General = {
 /**
  * Инициализация
  */
-        init: function () {
-            var mainClock = new Timer({});  //создаем объект "Таймер"
-            mainClock.findCurrentDate();    //устанавливаем свойства объекта
-            mainClock.showTime('#Timer');   //выводим время
-            Interface.scrollToAnchor(mainClock.anchor);     //прокручиваем расписание ко дню недели
-            $('.nav li a').on('click', function () {
-                $(this).parent().parent().find('.active').removeClass('active');
-                $(this).parent().addClass('active');
+    fac : 0,
+    spec: 0,
+    group: 0,
+    date: '',
+    init: function () {
+        var mainClock = new Timer({});  //создаем объект "Таймер"
+        mainClock.findCurrentDate();    //устанавливаем свойства объекта
+        mainClock.showTime('#Timer');   //выводим время
+        Interface.scrollToAnchor(mainClock.anchor);     //прокручиваем расписание ко дню недели
+        $('.nav li a').on('click', function () {
+            $(this).parent().parent().find('.active').removeClass('active');
+            $(this).parent().addClass('active');
+        });
+        $('.carousel').carousel('pause');
+        this.menu.getFac();
+    //Table.getData();
+    },
+    menu: {
+        getFac: function () {
+            $.getJSON('getfaculties', function (data) {
+                var buttons = '';
+                $.each(data, function (key, val) {
+                    buttons += '<button type="button" class="btn btn-default btn-lg btn-block" onclick="General.menu.getSpec(' + val.id + ')">' + val.short + '</button>';
+                });
+                $('#menu').html(buttons);
             });
-            $('.carousel').carousel('pause');
-        //Table.getData();
+        },
+        getSpec: function (fac) {
+            this.fac = fac;
+            $.getJSON('getspec/faculty' + fac, function (data) {
+                var buttons = '';
+                $.each(data, function (key, val) {
+                    buttons += '<button type="button" class="btn btn-default btn-lg btn-block" onclick="General.menu.getGroup(' + val.id + ')">' + val.short + '</button>';
+                });
+                buttons += '<button type="button" class="btn btn-info btn-lg btn-block" onclick="General.menu.getFac()">Назад</button>';
+                $('#menu').html(buttons);
+            });
+        },
+        getGroup: function (spec) {
+            var self = this;
+            this.spec = spec;
+            $.getJSON('getgroups/spec' + spec, function (data) {
+                var buttons = '';
+                $.each(data, function (key, val) {
+                    buttons += '<button type="button" class="btn btn-default btn-lg btn-block" onclick="General.menu.getSchedule(0,' + val.id + ')">' + val.title + '</button>';
+                });
+                buttons += '<button type="button" class="btn btn-info btn-lg btn-block" onclick="General.menu.getSpec(' + self.fac + ')">Назад</button>';
+                $('#menu').html(buttons);
+            });
+        },
+        getSchedule: function (date, group) {
+            var self = this,
+                d = new Date();
+            this.group = group;
+            date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
+            $.getJSON('schedule/group' + group + '/' + date, function (data) {
+                Table.getData(data);
+            });
         }
-    };
+    }
+};
 
 /**
  * Переключат кнопочки в меню
@@ -262,8 +289,3 @@ var LocStorage = {
 
     }
 };
-
-
-
-
-
