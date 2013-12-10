@@ -51,35 +51,12 @@ function ScheduleCell(args) {
  */
 var Table = {
     /**
-     * Массив дней недели для сохранения ячеек расписания типа ScheduleCell
+     * Массив с русскими названиями дней недели
      */
-    days: [
-        {Monday:    []},
-        {Tuesday:   []},
-        {Wednesday: []},
-        {Thursday:  []},
-        {Friday:    []},
-        {Saturday:  []},
-        {Sunday:    []}],
+    dayOfWeek : ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'],
 
     /**
-     * массив объектов-ячеек(занятий)
-     * @property
-     */
-    LessonsArray: [],
-
-    /**
-     * Сортировка выбранных пар по дням (ПН-СБ) и очередности (1-6)
-     * Сохраняем в выбранный день недели и выбранную пару информацию
-     * Например в (days) понедельник (cell.daycode) третьей парой (cell.lessonnumber) Программирование, лекция, аудитория, преподаватель
-     * @param {object} cell ячейка таблицы типа ScheduleCell
-     */
-    separateDay: function (cell) {
-        this.days[cell.daycode[cell.lessonnumber]] = cell;
-    },
-
-    /**
-     * читает все пары в массив и сортирует по дням и очередности
+     * выводим данные в таблицу
      */
     getData: function (data) {
         var self = this,
@@ -87,7 +64,8 @@ var Table = {
             len,
             table = '';
         for (i = 0; i < 6; i += 1) {
-            table += '<table class="tableday table table-bordered table-striped table-condensed">';
+            table += '<table class="tableday table table-bordered table-striped table-condensed">' +
+                '<tr><td colspan="2">' + this.dayOfWeek[i] + '</td></tr>';
             for (j = 0; j < 7; j += 1) {
                 table += '<tr><td class="lesson-number">' + (j + 1) + '</td><td class="tablerow">';
                 len = data[i][j].length;
