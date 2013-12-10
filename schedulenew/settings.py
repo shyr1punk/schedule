@@ -62,7 +62,8 @@ MEDIA_URL = ''
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
 #STATIC_ROOT = '/var/www/shyr1punk/data/www/schedule.fvds.ru/staticfiles/'
-STATIC_ROOT = '/home/shyr1punk/PycharmProjects/schedulenew/staticfiles/'
+#STATIC_ROOT = '/home/shyr1punk/PycharmProjects/schedulenew/staticfiles/'
+STATIC_ROOT = 'C:/USers/shyr1punk/PycharmProjects/schedule/staticfiles/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -70,7 +71,8 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    '/home/shyr1punk/PycharmProjects/schedulenew/static/',
+    #'/home/shyr1punk/PycharmProjects/schedulenew/static/',
+    'C:/Users/shyr1punk/PycharmProjects/schedule/static/',
     #'/var/www/shyr1punk/data/www/schedule.fvds.ru/static/',
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.

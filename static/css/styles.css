@@ -50,7 +50,7 @@
 
 .nameday {
     background: lightgray !important;
-    font-size: 17.5px !important;
+    font-size: 17px !important;
 }
 
 
@@ -73,13 +73,21 @@
 	color: transparent;
 }
 
-.name {
+.title {
     font-size: 15px;
+    line-height: 15px;
 }
 
-.prep {
+.teacher {
     font-size: 10pt;
     color: #999999;
+    float: left;
+}
+
+.auditory {
+    font-size: 10pt;
+    color: #999999;
+    float: right;
 }
 
 .date {
@@ -115,6 +123,23 @@ th {text-align:center}
 
 .tableday{
     float: left;
-    width: 30%;
+    width: 33%;
     display: table;
+}
+
+.tableday tr {
+    height: 68px;
+}
+
+.tableday td {
+    overflow: hidden;
+}
+
+.lesson-number {
+    width: 30px;
+    text-align: center;
+}
+
+.subgroup-lesson {
+    overflow: auto;
 }

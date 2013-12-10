@@ -3,7 +3,7 @@ __author__ = 'shyr1punk'
 
 import datetime
 import xlrd
-import urllib
+import urllib2
 from schedule.models import Group, Lesson, Subject, Teacher, Type, Auditory
 
 
@@ -14,12 +14,22 @@ class Parser():
         self.url = url
 
     def parse(self):
-        xls = urllib.urlopen(self.url)
-        f = open('/tmp/temp.xls', 'w')
-        f.write(xls.read())
-        f.close()
-        rb = xlrd.open_workbook('/tmp/temp.xls')
-        #table = []
+        try:
+            xls = urllib2.urlopen(self.url)
+        except ValueError:
+            f = open('e:\errors.txt', 'w')
+            f.write('ID: ' + self.id + ' 404')
+            f.close()
+            return
+
+        rb = xlrd.open_workbook(file_contents=xls.read())
+
+        if xls.info().getheader('Content-Type') != 'application/vnd.ms-excel':
+            f = open('e:\errors.txt', 'w')
+            f.write('ID: ' + self.id + 'type')
+            f.close()
+            return
+
         for sheetNumber in range(0, rb.nsheets):
             if sheetNumber == 1:
                 continue
@@ -83,10 +93,7 @@ class Parser():
                                 for ds in days:
                                     if e == ds:
                                         days.remove(ds)
-                    #tablerow = [lessonType, subject, teacher, days, number, auditory]
-                    #table.append(tablerow)
                     self.writeLesson(lessonType, subject, teacher, days, number, auditory)
-        #return table
 
     def writeLesson(self, lestype, predmet, prep, days, number, audit):
     # Определяем индекс типа занятия (их 3, поэтому определяем их заранее)

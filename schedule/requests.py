@@ -20,7 +20,7 @@ class GetSchedule:
         start_date = response_date - datetime.timedelta(days=response_date.weekday())
         end_date = start_date + datetime.timedelta(days=6)
         rows = Lesson.objects.filter(group_id=self.group, date__range=(start_date, end_date))
-        data = [[[] for x in xrange(7)] for x in xrange(7)]
+        data = [[[] for x in xrange(7)] for y in xrange(6)]
         for row in rows:
             data[row.date.weekday()][row.number - 1].append({
                 'title': row.subject.subj_full,

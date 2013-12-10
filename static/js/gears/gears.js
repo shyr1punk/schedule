@@ -17,10 +17,10 @@ var Interface = {
      * @function
      * @param {string} aid название якоря, например Monday
      */
-    scrollToAnchor: function (aid) {
+    /*scrollToAnchor: function (aid) {
         var aTag = $("a[name='" + aid + "']");
         $('html,body').animate({scrollTop: aTag.offset().top - 60}, 'slow');
-    }
+    }*/
 };
 
 /**
@@ -86,16 +86,15 @@ var Table = {
             i, j, k,
             len,
             table = '';
-        for (i = 0; i < 7; i += 1) {
+        for (i = 0; i < 6; i += 1) {
             table += '<table class="tableday table table-bordered table-striped table-condensed">';
             for (j = 0; j < 7; j += 1) {
-                table += '<tr><td class="tablerow">';
+                table += '<tr><td class="lesson-number">' + (j + 1) + '</td><td class="tablerow">';
                 len = data[i][j].length;
                 for (k = 0; k < len; k += 1) {
-                    console.log(data[i][j][k].title);
-                    table += '<div class="name">' + data[i][j][k].title + '</div>';
-                    table += '<div class="prep">' + data[i][j][k].teacher + '</div>';
-                    table += '<div class="prep">' + data[i][j][k].auditory + '</div>';
+                    table += '<div class="subgroup-lesson"><div class="title">' + data[i][j][k].title + '</div>';
+                    table += '<div class="teacher">' + data[i][j][k].teacher + '</div>';
+                    table += '<div class="auditory">' + data[i][j][k].auditory + '</div></div>';
                 }
                 table += '</td></tr>';
             }
@@ -192,7 +191,7 @@ var General = {
         var mainClock = new Timer({});  //создаем объект "Таймер"
         mainClock.findCurrentDate();    //устанавливаем свойства объекта
         mainClock.showTime('#Timer');   //выводим время
-        Interface.scrollToAnchor(mainClock.anchor);     //прокручиваем расписание ко дню недели
+        //Interface.scrollToAnchor(mainClock.anchor);     //прокручиваем расписание ко дню недели
         $('.nav li a').on('click', function () {
             $(this).parent().parent().find('.active').removeClass('active');
             $(this).parent().addClass('active');

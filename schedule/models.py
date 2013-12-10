@@ -35,10 +35,11 @@ class Speciality(models.Model):
 
 
 class Group(models.Model):
-    title = models.CharField(max_length=10)
+    title = models.CharField(max_length=20)
     course = models.IntegerField()
     spec = models.ForeignKey(Speciality)
     updated = models.DateTimeField(null=True, blank=True, editable=False)
+    etag = models.DateTimeField(null=True, blank=True, editable=False)
 
     def __unicode__(self):
         return u'ID: %d, Title: %s, course: %s, speciality: %s' % \
