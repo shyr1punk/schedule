@@ -3,7 +3,9 @@ __author__ = 'shyr1punk'
 
 
 from schedule.models import Group, Lesson
+from bs4 import BeautifulSoup
 import parser
+import urllib2
 import urllib
 
 
@@ -20,10 +22,33 @@ class Updater:
         return self.groups
 
     def autoUpdater(self):
-        groups = self.getGroupsList()
+        groups = []
+
+        siteName = 'http://www.mstuca.ru'
+        url = '/students/schedule/?content=.xls&timestamp_datesel=&timestamp_days=&timestamp_from=&timestamp_to=&doctype=acf489b4&%3FTAGS=&user_user_input=&user_user_input=&FILE_SIZE_from=&FILE_SIZE_to=&FILE_SIZE_multiply=b&WF_LOCK_STATUS=&filter=%CD%E0%E9%F2%E8&clear_filter='
+
+        while 1:
+
+            html = urllib2.urlopen(siteName + url)
+
+            soup = BeautifulSoup(html)
+
+            for link in soup.find_all(class_="element-title"):
+                groups.append([link['data-bx-title'].replace('.xls', ''), link['data-bx-download']])
+            nextPage = soup.find(class_='modern-page-next')
+            if nextPage:
+                url = nextPage.get('href')
+            else:
+                break
         for group in groups:
-            self.deleteGroup(group.id)
-            self.parseGroup(group.id, self.getUrl(group.id))
+            try:
+                groupId = self.findGroup(group[0].encode('utf-8'))
+            except Group.DoesNotExist:
+                continue
+            if groupId != -1:
+                self.deleteGroup(groupId)
+                self.parseGroup(groupId, siteName + group[1].encode('utf-8'))
+
         return 0
 
     def parseGroup(self, group, url):
@@ -50,3 +75,10 @@ class Updater:
             url += '%20(' + urllib.pathname2url(group.spec.faculty.fac_short.encode('utf-8')) + ')%20'
         url += '/' + urllib.pathname2url(group.spec.spec_short.encode('utf-8') + '/' + group.title.encode('utf-8')) + '.xls'
         return url
+
+    def findGroup(self, groupTitle):
+        try:
+            group = Group.objects.get(title=groupTitle)
+        except ValueError:
+            return -1
+        return group.id

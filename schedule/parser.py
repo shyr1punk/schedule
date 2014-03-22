@@ -14,14 +14,15 @@ class Parser():
         self.url = url
 
     def parse(self):
+        f = open('/home/shyr1punk/errors.txt', 'a')
         try:
             xls = urllib2.urlopen(self.url)
         except ValueError:
-            f = open('e:\errors.txt', 'w')
-            f.write('ID: ' + self.id + ' 404')
+            f.write('Error: ID: ' + str(self.id) + 'URL: ' + self.url + '\n')
             f.close()
             return
-
+        f.write('Success: ID: ' + str(self.id) + 'URL: ' + self.url + '\n')
+        f.close()
         rb = xlrd.open_workbook(file_contents=xls.read())
 
         if xls.info().getheader('Content-Type') != 'application/vnd.ms-excel':
