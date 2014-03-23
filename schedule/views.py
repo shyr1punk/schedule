@@ -10,13 +10,13 @@ import requests
 
 def updateGroups(request):
     upd = updater.Updater()
-    groups = upd.getGroupsList()
+    groups = upd.get_groups_list()
     return render_to_response('updategroups.html', locals())
 
 
 def insertGroup(request, groupID):
     upd = updater.Updater()
-    table = upd.parseGroup(groupID, upd.getUrl(groupID))
+    table = upd.parse_group(groupID, upd.getUrl(groupID))
     return render_to_response('insertgroup.html', locals())
 
 
@@ -32,7 +32,7 @@ def getJSON(request):
 
 def autoUpdater(request):
     updaterClass = updater.Updater()
-    result = updaterClass.autoUpdater()
+    result = updaterClass.auto_updater()
     return render_to_response('autoupdateresult.html', locals())
 
 
