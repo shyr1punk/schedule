@@ -3,7 +3,7 @@ __author__ = 'shyr1punk'
 
 
 from schedule.models import Group, Lesson
-from bs4 import BeautifulSoup
+from BeautifulSoup import BeautifulSoup
 import parser
 import urllib2
 import urllib

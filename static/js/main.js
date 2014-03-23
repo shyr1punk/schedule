@@ -17,7 +17,12 @@ var schedule = (function () {
             console.log("I am private");
         }
 
-        var privateVariable = "Im also private";
+        var type = [
+            'none',
+            'lec',
+            'prac',
+            'lab'
+        ];
 
         var privateRandomNumber = Math.random();
 
@@ -60,10 +65,36 @@ var schedule = (function () {
                     var self = this,
                         d = new Date();
                     this.group = group;
-                    date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
+                    //date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
+                    date = '2013/11/01';
                     $.getJSON('schedule/group' + group + '/' + date, function (data) {
-                        Table.getData(data);
+                        General.schedule.getData(data);
                     });
+                }
+            },
+            schedule : {
+                getData: function (data) {
+                    console.log(data);
+                    var self = this,
+                        i, j, k,
+                        len,
+                        table = '';
+                    for (i = 0; i < 6; i += 1) {
+                        table += '<table class="tableday table table-bordered table-striped table-condensed">' +
+                            '<tr><td colspan="2">' /*+ this.dayOfWeek[i]*/ + '</td></tr>';
+                        for (j = 0; j < 7; j += 1) {
+                            table += '<tr><td class="lesson-number">' + (j + 1) + '</td><td class="tablerow ' + (data[i][j].length ? type[data[i][j][0].type] : '') + '">';
+                            len = data[i][j].length;
+                            for (k = 0; k < len; k += 1) {
+                                table += '<div class="subgroup-lesson"><div class="title">' + data[i][j][k].title + '</div>';
+                                table += '<div class="teacher">' + data[i][j][k].teacher + '</div>';
+                                table += '<div class="auditory">' + data[i][j][k].auditory + '</div></div>';
+                            }
+                            table += '</td></tr>';
+                        }
+                        table += '</table>'
+                    }
+                    $('#week-schedule-inner').html(table);
                 }
             },
             // Public methods and variables
@@ -98,4 +129,6 @@ var schedule = (function () {
 
 }()),
 
-    s = schedule.getInstance();
+    General = schedule.getInstance();
+
+General.menu.getFac();
