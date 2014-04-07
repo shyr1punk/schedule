@@ -35,12 +35,17 @@ def fixurl(url):
         urllib.quote(urllib.unquote(pce).encode('utf8'),'')
         for pce in parsed.path.split('/')
     )
-    query = urllib.quote(urllib.unquote(parsed.query).encode('utf8'),'=&?/')
+    query = urllib.quote(urllib.unquote(parsed.query).encode('utf8'), '=&?/')
     fragment = urllib.quote(urllib.unquote(parsed.fragment).encode('utf8'))
 
     # put it back together
     netloc = ''.join((user, colon1, pass_, at, host, colon2, port))
     return urlparse.urlunsplit((scheme, netloc, path, query, fragment))
+
+
+#Функция возвращает верхняя или нижняя неделя у принятой даты
+def week_even(year, month, day):
+    return [u'В', u'Н'][datetime.date(year, month, day).isocalendar()[1] % 2]
 
 
 class Parser():
@@ -120,10 +125,14 @@ class Parser():
                                         # вычисляем шаг проведения пар (7 или 14 дней)
                             if week == '':  # если чётность недели пустая - пара на каждой неделе
                                 step = 7
+                                d = datebegin
                             else:
                                 step = 14
-                                # записываем все дни в список дней
-                            d = datebegin
+                                if week_even(self.year, int(begin[3:5]), int(begin[0:2])) == week:
+                                    d = datebegin
+                                else:
+                                    d = datebegin + datetime.timedelta(days=7)
+                            # записываем все дни в список дней
                             while d <= dateend:
                                 days.append(d)
                                 d += datetime.timedelta(days=step)
@@ -138,17 +147,14 @@ class Parser():
     # Определяем индекс типа занятия (их 3, поэтому определяем их заранее)
         if lesson_type == u'Лекция':
             db_lesson_type = 1
+        elif lesson_type == u'Пр.Зан.':
+            db_lesson_type = 2
+        elif lesson_type == u'Лаб.раб.':
+            db_lesson_type = 3
+        elif lesson_type == u'Семинар':
+            db_lesson_type = 4
         else:
-            if lesson_type == u'Пр.Зан.':
-                db_lesson_type = 2
-            else:
-                if lesson_type == u'Лаб.раб.':
-                    db_lesson_type = 3
-                else:
-                    if lesson_type == u'Семинар':
-                        db_lesson_type = 4
-                    else:
-                        db_lesson_type = 1
+            db_lesson_type = 1
 
         #Ищем предмет в БД или создаём новый
         try:
