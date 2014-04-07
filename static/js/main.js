@@ -52,10 +52,11 @@ var schedule = (function () {
 
             menu: {
                 getFac: function () {
+                    var template = Handlebars.compile('<button type="button" class="btn btn-default btn-lg btn-block" onclick="General.menu.getSpec({{value}})">{{text}}</button>');
                     $.getJSON('getfaculties', function (data) {
                         var buttons = '';
                         $.each(data, function (key, val) {
-                            buttons += '<button type="button" class="btn btn-default btn-lg btn-block" onclick="General.menu.getSpec(' + val.id + ')">' + val.short + '</button>';
+                            buttons += template({value : val.id, text : val.short});
                         });
                         $('#menu').html(buttons);
                     });
@@ -63,9 +64,10 @@ var schedule = (function () {
                 getSpec: function (fac) {
                     this.fac = fac;
                     $.getJSON('getspec/faculty' + fac, function (data) {
-                        var buttons = '';
+                        var buttons = '',
+                            template = Handlebars.compile('<button type="button" class="btn btn-default btn-lg btn-block" onclick="General.menu.getGroup({{value}})">{{text}}</button>');
                         $.each(data, function (key, val) {
-                            buttons += '<button type="button" class="btn btn-default btn-lg btn-block" onclick="General.menu.getGroup(' + val.id + ')">' + val.short + '</button>';
+                            buttons += template({value : val.id, text : val.short});
                         });
                         buttons += '<button type="button" class="btn btn-info btn-lg btn-block" onclick="General.menu.getFac()">Назад</button>';
                         $('#menu').html(buttons);
@@ -75,9 +77,10 @@ var schedule = (function () {
                     var self = this;
                     this.spec = spec;
                     $.getJSON('getgroups/spec' + spec, function (data) {
-                        var buttons = '';
+                        var buttons = '',
+                            template = Handlebars.compile('<button type="button" class="btn btn-default btn-lg btn-block" onclick="General.menu.getSchedule({{date}},{{value}})">{{text}}</button>');
                         $.each(data, function (key, val) {
-                            buttons += '<button type="button" class="btn btn-default btn-lg btn-block" onclick="General.menu.getSchedule(0,' + val.id + ')">' + val.title + '</button>';
+                            buttons += template({date : 0, value : val.id, text : val.title});
                         });
                         buttons += '<button type="button" class="btn btn-info btn-lg btn-block" onclick="General.menu.getSpec(' + self.fac + ')">Назад</button>';
                         $('#menu').html(buttons);
