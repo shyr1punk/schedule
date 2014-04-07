@@ -37,7 +37,8 @@ def auto_updater(request):
 
 
 def index(request):
-    return render_to_response('index.html')
+    teachers_list = requests.get_teachers_list()
+    return render_to_response('index.html', locals())
 
 
 def get_faculties(request):
@@ -56,3 +57,11 @@ def get_groups(request, speciality_id):
     groups = requests.GetGroups(speciality_id)
     data = groups.response()
     return HttpResponse(data, content_type="application/json")
+
+
+def get_teachers_list(request):
+    return HttpResponse(requests.get_teachers_list_json(), content_type="application/json")
+
+
+def get_teacher_schedule(request, teacher_id, year, month, day):
+    return HttpResponse(requests.get_teacher_schedule_request(teacher_id, year, month, day), content_type="application/json")

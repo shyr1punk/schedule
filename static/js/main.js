@@ -9,8 +9,20 @@ var schedule = (function () {
     var instance;
 
     function init() {
-
-        // Singleton
+        /**
+         * Обработчик выбора преподавателя
+         */
+        $('#teachers-list').change(function() {
+            'use strict';
+            var d = new Date(),
+                date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate(),
+                teacherID = $('#teachers-list :selected').val();
+            if (teacherID) {
+                $.getJSON('schedule/teacher' + teacherID + '/' + date, function (data) {
+                    General.schedule.getData(data);
+                });
+            }
+        });
 
         // Private methods and variables
         function privateMethod() {
@@ -22,6 +34,16 @@ var schedule = (function () {
             'lec',
             'prac',
             'lab'
+        ];
+
+        var dayOfWeek = [
+            'Понедельник',
+            'Вторник',
+            'Среда',
+            'Четверг',
+            'Пятница',
+            'Суббота',
+            'Воскресение'
         ];
 
         var privateRandomNumber = Math.random();
@@ -80,13 +102,13 @@ var schedule = (function () {
                         table = '';
                     for (i = 0; i < 6; i += 1) {
                         table += '<table class="tableday table table-bordered table-striped table-condensed">' +
-                            '<tr><td colspan="2">' /*+ this.dayOfWeek[i]*/ + '</td></tr>';
+                            '<tr><td colspan="2">' + dayOfWeek[i] + '</td></tr>';
                         for (j = 0; j < 7; j += 1) {
                             table += '<tr><td class="lesson-number">' + (j + 1) + '</td><td class="tablerow ' + (data[i][j].length ? type[data[i][j][0].type] : '') + '">';
                             len = data[i][j].length;
                             for (k = 0; k < len; k += 1) {
                                 table += '<div class="subgroup-lesson"><div class="title">' + data[i][j][k].title + '</div>';
-                                table += '<div class="teacher">' + data[i][j][k].teacher + '</div>';
+                                table += '<div class="teacher">' + (data[i][j][k].teacher ? data[i][j][k].teacher : data[i][j][k].group) + '</div>';
                                 table += '<div class="auditory">' + data[i][j][k].auditory + '</div></div>';
                             }
                             table += '</td></tr>';
@@ -96,9 +118,13 @@ var schedule = (function () {
                     $('#week-schedule-inner').html(table);
                 }
             },
-            // Public methods and variables
-            publicMethod: function () {
-                console.log("The public can see me!");
+            /**
+             * Получаем список преподавателей
+             */
+            getTeachersList: function () {
+                $.getJSON('get_teachers_list', function (data) {
+                    console.log(data);
+                });
             },
 
             publicProperty: "I am also public",

@@ -36,6 +36,14 @@
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#weekSchedule">Недельное расписание</a></li>
+                    <li>
+                        <select id="teachers-list" class="form-control">
+                            <option></option>
+                            {% for option in teachers_list %}
+                                <option value="{{ option.id }}">{{ option.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </li>
                 </ul>
             </div>
             <!--/.nav-collapse -->

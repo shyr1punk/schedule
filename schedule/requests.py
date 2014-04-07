@@ -4,7 +4,7 @@ from __builtin__ import str
 __author__ = 'shyr1punk'
 
 import datetime
-from schedule.models import Lesson, Faculty, Speciality, Group
+from schedule.models import Lesson, Faculty, Speciality, Group, Teacher
 import json
 
 
@@ -77,4 +77,36 @@ class GetGroups:
                 'title': row.title
             })
 
+        return json.dumps(data)
+
+
+def get_teachers_list_json():
+    rows = Teacher.objects.all()
+    data = []
+    for row in rows:
+        data.append({
+            'id': row.id,
+            'name': row.name
+        })
+    return json.dumps(data)
+
+
+def get_teachers_list():
+    return Teacher.objects.all()
+
+
+def get_teacher_schedule_request(teacher_id, year, month, day):
+        response_date = datetime.date(int(year), int(month), int(day))
+        start_date = response_date - datetime.timedelta(days=response_date.weekday())
+        end_date = start_date + datetime.timedelta(days=6)
+        rows = Lesson.objects.filter(teacher_id=int(teacher_id), date__range=(start_date, end_date))
+        data = [[[] for x in xrange(7)] for y in xrange(6)]
+        for row in rows:
+            data[row.date.weekday()][row.number - 1].append({
+                'title': row.subject.subj_full,
+                'group': row.group.title,
+                'auditory': row.auditory.title,
+                'type': row.lesson_type_id,
+                'date': str(row.date),
+            })
         return json.dumps(data)
