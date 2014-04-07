@@ -48,6 +48,7 @@ class Parser():
     def __init__(self, group_id, url):
         self.id = group_id
         self.url = fixurl(url)
+        self.year = 2014
 
     def parse(self):
         f = open('e:/errors.txt', 'a')
@@ -75,6 +76,7 @@ class Parser():
             row_number = 0
             for row_number in range(sheet.nrows):  # считываем строки Excel файла
                 rows.append(sheet.row_values(row_number))
+            #return rows
             # подготавливаем к записи в БД
             for i in range(1, row_number):
                 # ищем занятия
@@ -99,21 +101,21 @@ class Parser():
                         for j in range(6, len(days_string)):
                             if days_string[j] == u'.':
                                 d = days_string[j - 2: j + 3]
-                                days.append(datetime.date(2014, int(d[3:5]), int(d[0:2])))
+                                days.append(datetime.date(self.year, int(d[3:5]), int(d[0:2])))
                     else:
                         # когда есть "с xx.xx по xx.xx"
                         frm = days_string.find(u'с ')
                         if frm != -1:
                             begin = days_string[frm + 2:frm + 7]  # начало периода пар
-                            datebegin = datetime.date(2013, int(begin[3:5]), int(begin[0:2]))  # приводим к формату даты
+                            datebegin = datetime.date(self.year, int(begin[3:5]), int(begin[0:2]))  # приводим к формату даты
                             end = days_string[frm + 11:frm + 16]  # конец периода
-                            dateend = datetime.date(2013, int(end[3:5]), int(end[0:2]))
+                            dateend = datetime.date(self.year, int(end[3:5]), int(end[0:2]))
                             exclude = days_string.find(u'кроме ')
                             if exclude != -1:   # если есть слово "кроме" в строке
                                 for j in range(exclude + 6, len(days_string)):
                                     if days_string[j] == u'.':
                                         e = days_string[j - 2: j + 3]
-                                        ex = datetime.date(2013, int(e[3:5]), int(e[0:2]))
+                                        ex = datetime.date(self.year, int(e[3:5]), int(e[0:2]))
                                         excluded.append(ex)
                                         # вычисляем шаг проведения пар (7 или 14 дней)
                             if week == '':  # если чётность недели пустая - пара на каждой неделе
