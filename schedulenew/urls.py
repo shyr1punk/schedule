@@ -17,14 +17,14 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^updategroups/$', view.updateGroups),
+    url(r'^updategroups/$', view.update_groups),
     url(r'^insertGroup/id(\d{1,4})/$', view.insert_group),
-    url(r'^schedule/group(\d{1,4})/(\d{2,4})/(\d{1,2})/(\d{1,2})/$', view.getSchedule),
-    url(r'^json/$', view.getJSON),
-    url(r'^autoupdate/$', view.autoUpdater),
-    url(r'^getfaculties/$', view.getFaculties),
-    url(r'^getspec/faculty(\d{1,2})/$', view.getSpec),
-    url(r'^getgroups/spec(\d{1,2})/$', view.getGroups),
+    url(r'^schedule/group(\d{1,4})/(\d{2,4})/(\d{1,2})/(\d{1,2})/$', view.get_schedule),
+    url(r'^json/$', view.get_json),
+    url(r'^autoupdate/$', view.auto_updater),
+    url(r'^getfaculties/$', view.get_faculties),
+    url(r'^getspec/faculty(\d{1,2})/$', view.get_spec),
+    url(r'^getgroups/spec(\d{1,2})/$', view.get_groups),
     url(r'^$', view.index),
 )
 
