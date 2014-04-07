@@ -39,7 +39,8 @@ class Group(models.Model):
     course = models.IntegerField()
     spec = models.ForeignKey(Speciality)
     updated = models.DateTimeField(null=True, blank=True, editable=False)
-    #etag = models.DateTimeField(null=True, blank=True, editable=False)
+    link = models.CharField(max_length=200)
+    etag = models.DateTimeField(null=True, blank=True, editable=False)
 
     def __unicode__(self):
         return u'ID: %d, Title: %s, course: %s, speciality: %s' % \

@@ -4,17 +4,53 @@ __author__ = 'shyr1punk'
 import datetime
 import xlrd
 import urllib2
+import urlparse
+import urllib
 from schedule.models import Group, Lesson, Subject, Teacher, Type, Auditory
+
+
+def fixurl(url):
+    # turn string into unicode
+    if not isinstance(url, unicode):
+        url = url.decode('utf8')
+
+    # parse it
+    parsed = urlparse.urlsplit(url)
+
+    # divide the netloc further
+    userpass, at, hostport = parsed.netloc.rpartition('@')
+    user, colon1, pass_ = userpass.partition(':')
+    host, colon2, port = hostport.partition(':')
+
+    # encode each component
+    scheme = parsed.scheme.encode('utf8')
+    user = urllib.quote(user.encode('utf8'))
+    colon1 = colon1.encode('utf8')
+    pass_ = urllib.quote(pass_.encode('utf8'))
+    at = at.encode('utf8')
+    host = host.encode('idna')
+    colon2 = colon2.encode('utf8')
+    port = port.encode('utf8')
+    path = '/'.join(  # could be encoded slashes!
+        urllib.quote(urllib.unquote(pce).encode('utf8'),'')
+        for pce in parsed.path.split('/')
+    )
+    query = urllib.quote(urllib.unquote(parsed.query).encode('utf8'),'=&?/')
+    fragment = urllib.quote(urllib.unquote(parsed.fragment).encode('utf8'))
+
+    # put it back together
+    netloc = ''.join((user, colon1, pass_, at, host, colon2, port))
+    return urlparse.urlunsplit((scheme, netloc, path, query, fragment))
 
 
 class Parser():
 
-    def __init__(self, groupID, url):
-        self.id = groupID
-        self.url = url
+    def __init__(self, group_id, url):
+        self.id = group_id
+        self.url = fixurl(url)
 
     def parse(self):
-        f = open('/home/shyr1punk/errors.txt', 'a')
+        f = open('e:/errors.txt', 'a')
         try:
             xls = urllib2.urlopen(self.url)
         except ValueError:
@@ -36,11 +72,11 @@ class Parser():
                 continue
             sheet = rb.sheet_by_index(sheetNumber)
             rows = []
-            rowNumber = 0
-            for rowNumber in range(sheet.nrows):  # считываем строки Excel файла
-                rows.append(sheet.row_values(rowNumber))
+            row_number = 0
+            for row_number in range(sheet.nrows):  # считываем строки Excel файла
+                rows.append(sheet.row_values(row_number))
             # подготавливаем к записи в БД
-            for i in range(1, rowNumber):
+            for i in range(1, row_number):
                 # ищем занятия
                 if rows[i - 1][0] != '':
                     number = int(rows[i - 1][0])   # номер пары
@@ -50,33 +86,33 @@ class Parser():
                         week = rows[i - 1][1]
                     if rows[i - 1][1] != '':
                         week = rows[i - 1][1]     # день недели
-                    lessonType = rows[i][2]  # тип пары
+                    lesson_type = rows[i][2]  # тип пары
                     teacher = rows[i][4]     # преподаватель
                     auditory = rows[i][6]    # аудитория
                     subject = rows[i - 1][2]  # название предмета
-                    daysString = rows[i + 1][2]  # строка дни проведения занятий
+                    days_string = rows[i + 1][2]  # строка дни проведения занятий
                     days = []  # массив с днями проведения занятий
                     excluded = []  # временный массив для хранения исключаемых занятий
                     # ищем дни проведения
                     # когда есть пары "только"
-                    if daysString.find(u'только') != -1:
-                        for j in range(6, len(daysString)):
-                            if daysString[j] == u'.':
-                                d = daysString[j - 2: j + 3]
-                                days.append(datetime.date(2013, int(d[3:5]), int(d[0:2])))
+                    if days_string.find(u'только') != -1:
+                        for j in range(6, len(days_string)):
+                            if days_string[j] == u'.':
+                                d = days_string[j - 2: j + 3]
+                                days.append(datetime.date(2014, int(d[3:5]), int(d[0:2])))
                     else:
                         # когда есть "с xx.xx по xx.xx"
-                        frm = daysString.find(u'с ')
+                        frm = days_string.find(u'с ')
                         if frm != -1:
-                            begin = daysString[frm + 2:frm + 7]  # начало периода пар
+                            begin = days_string[frm + 2:frm + 7]  # начало периода пар
                             datebegin = datetime.date(2013, int(begin[3:5]), int(begin[0:2]))  # приводим к формату даты
-                            end = daysString[frm + 11:frm + 16]  # конец периода
+                            end = days_string[frm + 11:frm + 16]  # конец периода
                             dateend = datetime.date(2013, int(end[3:5]), int(end[0:2]))
-                            exclude = daysString.find(u'кроме ')
+                            exclude = days_string.find(u'кроме ')
                             if exclude != -1:   # если есть слово "кроме" в строке
-                                for j in range(exclude + 6, len(daysString)):
-                                    if daysString[j] == u'.':
-                                        e = daysString[j - 2: j + 3]
+                                for j in range(exclude + 6, len(days_string)):
+                                    if days_string[j] == u'.':
+                                        e = days_string[j - 2: j + 3]
                                         ex = datetime.date(2013, int(e[3:5]), int(e[0:2]))
                                         excluded.append(ex)
                                         # вычисляем шаг проведения пар (7 или 14 дней)
@@ -94,63 +130,63 @@ class Parser():
                                 for ds in days:
                                     if e == ds:
                                         days.remove(ds)
-                    self.writeLesson(lessonType, subject, teacher, days, number, auditory)
+                    self.write_lesson(lesson_type, subject, teacher, days, number, auditory)
 
-    def writeLesson(self, lestype, predmet, prep, days, number, audit):
+    def write_lesson(self, lesson_type, subject, prep, days, number, audit):
     # Определяем индекс типа занятия (их 3, поэтому определяем их заранее)
-        if lestype == u'Лекция':
-            dblestype = 1
+        if lesson_type == u'Лекция':
+            db_lesson_type = 1
         else:
-            if lestype == u'Пр.Зан.':
-                dblestype = 2
+            if lesson_type == u'Пр.Зан.':
+                db_lesson_type = 2
             else:
-                if lestype == u'Лаб.раб.':
-                    dblestype = 3
+                if lesson_type == u'Лаб.раб.':
+                    db_lesson_type = 3
                 else:
-                    if lestype == u'Семинар':
-                        dblestype = 4
+                    if lesson_type == u'Семинар':
+                        db_lesson_type = 4
                     else:
-                        dblestype = 1
+                        db_lesson_type = 1
 
         #Ищем предмет в БД или создаём новый
         try:
-            subj = Subject.objects.get(subj_full=predmet)
+            subj = Subject.objects.get(subj_full=subject)
         except Subject.DoesNotExist:
-            dbSubject = Subject(
-                subj_full=predmet,
+            db_subject = Subject(
+                subj_full=subject,
                 subj_short='',
             )
-            dbSubject.save()
-            subj = dbSubject
+            db_subject.save()
+            subj = db_subject
 
         #Аудитория
         try:
             auditory = Auditory.objects.get(title=audit)
         except Auditory.DoesNotExist:
-            dbAuditory = Auditory(
+            db_auditory = Auditory(
                 title=audit,
             )
-            dbAuditory.save()
-            auditory = dbAuditory
+            db_auditory.save()
+            auditory = db_auditory
 
         #Преподаватель
         try:
             teacher = Teacher.objects.get(name=prep)
         except Teacher.DoesNotExist:
-            dbTeacher = Teacher(
+            db_teacher = Teacher(
                 name=prep,
             )
-            dbTeacher.save()
-            teacher = dbTeacher
+            db_teacher.save()
+            teacher = db_teacher
 
         for day in days:
-            dbLesson = Lesson(
+            db_lesson = Lesson(
                 number=number,
                 date=day,
                 subject=subj,
                 teacher=teacher,
-                lesson_type=Type.objects.get(id=dblestype),
+                lesson_type=Type.objects.get(id=db_lesson_type),
                 group=Group.objects.get(id=self.id),
                 auditory=auditory,
             )
-            dbLesson.save()
+            db_lesson.save()

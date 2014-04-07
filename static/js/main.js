@@ -65,8 +65,7 @@ var schedule = (function () {
                     var self = this,
                         d = new Date();
                     this.group = group;
-                    //date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
-                    date = '2013/11/01';
+                    date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
                     $.getJSON('schedule/group' + group + '/' + date, function (data) {
                         General.schedule.getData(data);
                     });

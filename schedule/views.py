@@ -14,9 +14,9 @@ def updateGroups(request):
     return render_to_response('updategroups.html', locals())
 
 
-def insertGroup(request, groupID):
+def insert_group(request, group_id):
     upd = updater.Updater()
-    table = upd.parse_group(groupID, upd.getUrl(groupID))
+    table = upd.parse_group(group_id, upd.get_url(group_id))
     return render_to_response('insertgroup.html', locals())
 
 
