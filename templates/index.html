@@ -38,7 +38,7 @@
                     <li class="active"><a href="#weekSchedule">Недельное расписание</a></li>
                     <li>
                         <select id="teachers-list" class="form-control">
-                            <option></option>
+                            <option value disabled selected>Выберите преподавателя</option>
                             {% for option in teachers_list %}
                                 <option value="{{ option.id }}">{{ option.name }}</option>
                             {% endfor %}

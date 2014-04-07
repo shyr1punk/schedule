@@ -92,7 +92,7 @@ def get_teachers_list_json():
 
 
 def get_teachers_list():
-    return Teacher.objects.all()
+    return Teacher.objects.order_by("name")
 
 
 def get_teacher_schedule_request(teacher_id, year, month, day):

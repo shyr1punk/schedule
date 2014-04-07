@@ -9,6 +9,7 @@ var schedule = (function () {
     var instance;
 
     function init() {
+        var date = new Date();
         /**
          * Обработчик выбора преподавателя
          */
@@ -24,17 +25,29 @@ var schedule = (function () {
             }
         });
 
-        // Private methods and variables
-        function privateMethod() {
-            console.log("I am private");
+
+        function getDateToUrl(date) {
+            return date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate()
         }
 
-        var type = [
-            'none',
-            'lec',
-            'prac',
-            'lab'
-        ];
+        var type = {
+            1: {
+                class: 'lec',
+                title: 'Лекция'
+            },
+            2: {
+                class: 'prac',
+                title: 'Практика'
+            },
+            3: {
+                class: 'lab',
+                title: 'Лабораторная работа'
+            },
+            4: {
+                class: 'prac',
+                title: 'Семинар'
+            }
+        };
 
         var dayOfWeek = [
             'Понедельник',
@@ -78,7 +91,7 @@ var schedule = (function () {
                     this.spec = spec;
                     $.getJSON('getgroups/spec' + spec, function (data) {
                         var buttons = '',
-                            template = Handlebars.compile('<button type="button" class="btn btn-default btn-lg btn-block" onclick="General.menu.getSchedule({{date}},{{value}})">{{text}}</button>');
+                            template = Handlebars.compile('<button type="button" class="btn btn-default btn-lg btn-block" onclick="General.menu.getSchedule({{value}})">{{text}}</button>');
                         $.each(data, function (key, val) {
                             buttons += template({date : 0, value : val.id, text : val.title});
                         });
@@ -86,12 +99,9 @@ var schedule = (function () {
                         $('#menu').html(buttons);
                     });
                 },
-                getSchedule: function (date, group) {
-                    var self = this,
-                        d = new Date();
+                getSchedule: function (group) {
                     this.group = group;
-                    date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
-                    $.getJSON('schedule/group' + group + '/' + date, function (data) {
+                    $.getJSON('schedule/group' + group + '/' + getDateToUrl(date), function (data) {
                         General.schedule.getData(data);
                     });
                 }
@@ -105,13 +115,13 @@ var schedule = (function () {
                         table = '';
                     for (i = 0; i < 6; i += 1) {
                         table += '<table class="tableday table table-bordered table-striped table-condensed">' +
-                            '<tr><td colspan="2">' + dayOfWeek[i] + '</td></tr>';
+                            '<tr><td colspan="2" class="week-day-header">' + dayOfWeek[i] + '</td></tr>';
                         for (j = 0; j < 7; j += 1) {
-                            table += '<tr><td class="lesson-number">' + (j + 1) + '</td><td class="tablerow ' + (data[i][j].length ? type[data[i][j][0].type] : '') + '">';
+                            table += '<tr><td class="lesson-number">' + (j + 1) + '</td><td class="tablerow ' + (data[i][j].length ? type[data[i][j][0].type].class : '') + '">';
                             len = data[i][j].length;
                             for (k = 0; k < len; k += 1) {
                                 table += '<div class="subgroup-lesson"><div class="title">' + data[i][j][k].title + '</div>';
-                                table += '<div class="teacher">' + (data[i][j][k].teacher ? data[i][j][k].teacher : data[i][j][k].group) + '</div>';
+                                table += '<div class="teacher">' + (data[i][j][k].teacher ? data[i][j][k].teacher : data[i][j][k].group) + ' ' + type[data[i][j][k].type].title + '</div>';
                                 table += '<div class="auditory">' + data[i][j][k].auditory + '</div></div>';
                             }
                             table += '</td></tr>';

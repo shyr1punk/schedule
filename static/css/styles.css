@@ -1,72 +1,29 @@
-@media only screen and (max-width: 800px) {
-
-    /* Force table to not be like tables anymore */
-    #no-more-tables table, 
-    #no-more-tables thead, 
-    #no-more-tables tbody, 
-    #no-more-tables th, 
-    #no-more-tables td, 
-    #no-more-tables tr { 
-        display: block; 
-    }
-
-    /* Hide table headers (but not display: none;, for accessibility) */
-    #no-more-tables thead tr { 
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-    #no-more-tables tr { border: 1px solid #ccc; }
-
-    #no-more-tables td { 
-        /* Behave  like a "row" */
-        border: none;
-        border-bottom: 1px solid #eee; 
-        position: relative;
-        padding-left: 50%; 
-        white-space: normal;
-        text-align:left;
-    }
-
-    #no-more-tables td:before { 
-        /* Now like a table header */
-        position: absolute;
-        /* Top/left values mimic padding */
-        top: 6px;
-        left: 6px;
-        width: 45%; 
-        padding-right: 10px; 
-        white-space: nowrap;
-        text-align:left;
-        font-weight: bold;
-    }
-
-    /*
-    Label the data
-    */
-    #no-more-tables td:before { content: attr(data-title); }
+.navbar-nav>li>select {
+    margin: 7px 20px;
 }
 
-.nameday {
-    background: lightgray !important;
-    font-size: 17px !important;
+#wrap {
+    overflow: auto;
 }
 
+.week-day-header {
+    text-align: center;
+    font-size: 18px;
+}
 
 .lec {
-   background: #50a170 !important;
-   color:white;
+   background: #bcf8d1 !important;
+   color: #000;
 }
 
 .prac {
-   background: #5eadbd !important;
-   color: white;
+   background: #9fe1f1 !important;
+   color: #000;
 }
 
 .lab {
-    background: #f5b07f !important; 
-    color: white;
+    background: #fce5cd !important;
+    color: #000;
 }
 
 .none {	
@@ -80,19 +37,19 @@
 
 .teacher {
     font-size: 10pt;
-    color: #999999;
+    color: #333333;
     float: left;
 }
 
 .auditory {
     font-size: 10pt;
-    color: #999999;
+    color: #333333;
     float: right;
 }
 
 .date {
     font-size: 10pt;
-    color: #999999;
+    color: #333333;
     font-weight: normal;
 }
 
@@ -135,5 +92,4 @@ th {text-align:center}
 #week-schedule-inner {
     width: 70%;
     margin: 0 auto;
-    overflow: auto;
 }
