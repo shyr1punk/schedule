@@ -54,6 +54,7 @@ class Parser():
         self.id = group_id
         self.url = fixurl(url)
         self.year = 2014
+        self.lessons_list = []
 
     def parse(self):
         f = open('e:/errors.txt', 'a')
@@ -142,6 +143,8 @@ class Parser():
                                     if e == ds:
                                         days.remove(ds)
                     self.write_lesson(lesson_type, subject, teacher, days, number, auditory)
+        #Записываем одним запросом все занятия
+        Lesson.objects.bulk_create(self.lessons_list)
 
     def write_lesson(self, lesson_type, subject, prep, days, number, audit):
     # Определяем индекс типа занятия (их 3, поэтому определяем их заранее)
@@ -186,9 +189,9 @@ class Parser():
             )
             db_teacher.save()
             teacher = db_teacher
-
+        #Добавляем в список всех занятий новые
         for day in days:
-            db_lesson = Lesson(
+            self.lessons_list.append(Lesson(
                 number=number,
                 date=day,
                 subject=subj,
@@ -196,5 +199,4 @@ class Parser():
                 lesson_type=Type.objects.get(id=db_lesson_type),
                 group=Group.objects.get(id=self.id),
                 auditory=auditory,
-            )
-            db_lesson.save()
+            ))
