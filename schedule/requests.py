@@ -28,6 +28,7 @@ class GetSchedule:
                 'auditory': row.auditory.title,
                 'type': row.lesson_type_id,
                 'date': str(row.date),
+                'subGroup': row.sub_group,
             })
         return json.dumps(data)
 

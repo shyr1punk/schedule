@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/static/css/sticky-footer-navbar.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/static/css/no-more-tables.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/static/css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/static/datepicker/css/datepicker3.css"/>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="{{ STATIC_URL }}/assets/js/html5shiv.js"></script>
@@ -68,6 +69,9 @@
                 </div>
             </div>
             <div class="col-md-3 well">
+                <div class="input-group date">
+                    <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
                 <div id="menu" class="sidebar-nav">
                     <!--Side menu-->
                 </div>
@@ -90,7 +94,8 @@
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="{{ STATIC_URL }}/static/js/bootstrap/bootstrap.min.js"></script>
 <script src="{{ STATIC_URL }}/static/js/handlebars-v1.3.0.js"></script>
+<script src="{{ STATIC_URL }}/static/datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{ STATIC_URL }}/static/datepicker/js/bootstrap-datepicker.ru.js"></script>
 <script src="{{ STATIC_URL }}/static/js/main.js"></script>
-
 </body>
 </html>

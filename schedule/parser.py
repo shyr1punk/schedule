@@ -74,10 +74,10 @@ class Parser():
             f.close()
             return
 
-        for sheetNumber in range(0, rb.nsheets):
-            if sheetNumber == 1:
+        for sheet_number in range(0, rb.nsheets):
+            if sheet_number == 1:
                 continue
-            sheet = rb.sheet_by_index(sheetNumber)
+            sheet = rb.sheet_by_index(sheet_number)
             rows = []
             row_number = 0
             for row_number in range(sheet.nrows):  # считываем строки Excel файла
@@ -142,11 +142,11 @@ class Parser():
                                 for ds in days:
                                     if e == ds:
                                         days.remove(ds)
-                    self.write_lesson(lesson_type, subject, teacher, days, number, auditory)
+                    self.write_lesson(lesson_type, subject, teacher, days, number, auditory, sheet_number)
         #Записываем одним запросом все занятия
         Lesson.objects.bulk_create(self.lessons_list)
 
-    def write_lesson(self, lesson_type, subject, prep, days, number, audit):
+    def write_lesson(self, lesson_type, subject, prep, days, number, audit, sheet_number):
     # Определяем индекс типа занятия (их 3, поэтому определяем их заранее)
         if lesson_type == u'Лекция':
             db_lesson_type = 1
@@ -158,6 +158,11 @@ class Parser():
             db_lesson_type = 4
         else:
             db_lesson_type = 1
+
+        if sheet_number == 0:
+            sub_group = 0
+        else:
+            sub_group = sheet_number - 1
 
         #Ищем предмет в БД или создаём новый
         try:
@@ -197,6 +202,7 @@ class Parser():
                 subject=subj,
                 teacher=teacher,
                 lesson_type=Type.objects.get(id=db_lesson_type),
+                sub_group=sub_group,
                 group=Group.objects.get(id=self.id),
                 auditory=auditory,
             ))

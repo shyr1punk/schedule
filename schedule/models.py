@@ -68,11 +68,12 @@ class Lesson(models.Model):
     teacher = models.ForeignKey(Teacher)
     lesson_type = models.ForeignKey(Type)
     group = models.ForeignKey(Group)
+    sub_group = models.IntegerField(default=0)
     auditory = models.ForeignKey(Auditory)
 
     def __unicode__(self):
-        return u'ID %d, number: %s, date: %s, subject: %s, teacher: %s, type: %s, group: %s, auditory: %s ' % \
+        return u'ID %d, number: %s, date: %s, subject: %s, teacher: %s, type: %s, group: %s, sub_group: %s, auditory: %s ' % \
                (self.id, self.number, self.date, self.subject.subj_full, self.teacher.name,
-                self.lesson_type.type_full, self.group.title, self.auditory)
+                self.lesson_type.type_full, self.group.title, self.sub_group, self.auditory)
 
 

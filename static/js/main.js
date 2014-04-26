@@ -25,6 +25,16 @@ var schedule = (function () {
             }
         });
 
+        $('.input-group.date').datepicker({
+            todayBtn: true,
+            language: "ru",
+            calendarWeeks: true,
+            todayHighlight: true
+        });
+        $('.input-group.date input').change(function (val) {
+            console.log(val);
+        });
+
 
         function getDateToUrl(date) {
             return date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate()
@@ -122,7 +132,7 @@ var schedule = (function () {
                             for (k = 0; k < len; k += 1) {
                                 table += '<div class="subgroup-lesson"><div class="title">' + data[i][j][k].title + '</div>';
                                 table += '<div class="teacher">' + (data[i][j][k].teacher ? data[i][j][k].teacher : data[i][j][k].group) + ' ' + type[data[i][j][k].type].title + '</div>';
-                                table += '<div class="auditory">' + data[i][j][k].auditory + '</div></div>';
+                                table += '<div class="auditory">' + (data[i][j][k].subGroup == 0 ? '' : 'Подгруппа ' + data[i][j][k].subGroup + ' ') + data[i][j][k].auditory + '</div></div>';
                             }
                             table += '</td></tr>';
                         }
