@@ -65,3 +65,7 @@ def get_teachers_list(request):
 
 def get_teacher_schedule(request, teacher_id, year, month, day):
     return HttpResponse(requests.get_teacher_schedule_request(teacher_id, year, month, day), content_type="application/json")
+
+
+def get_semester_schedule(request, group):
+    return HttpResponse(requests.get_semester_schedule_request(group), content_type="application/json")

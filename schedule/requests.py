@@ -97,17 +97,34 @@ def get_teachers_list():
 
 
 def get_teacher_schedule_request(teacher_id, year, month, day):
-        response_date = datetime.date(int(year), int(month), int(day))
-        start_date = response_date - datetime.timedelta(days=response_date.weekday())
-        end_date = start_date + datetime.timedelta(days=6)
-        rows = Lesson.objects.filter(teacher_id=int(teacher_id), date__range=(start_date, end_date))
-        data = [[[] for x in xrange(7)] for y in xrange(6)]
-        for row in rows:
-            data[row.date.weekday()][row.number - 1].append({
-                'title': row.subject.subj_full,
-                'group': row.group.title,
-                'auditory': row.auditory.title,
-                'type': row.lesson_type_id,
-                'date': str(row.date),
-            })
-        return json.dumps(data)
+    response_date = datetime.date(int(year), int(month), int(day))
+    start_date = response_date - datetime.timedelta(days=response_date.weekday())
+    end_date = start_date + datetime.timedelta(days=6)
+    rows = Lesson.objects.filter(teacher_id=int(teacher_id), date__range=(start_date, end_date))
+    data = [[[] for x in xrange(7)] for y in xrange(6)]
+    for row in rows:
+        data[row.date.weekday()][row.number - 1].append({
+            'title': row.subject.subj_full,
+            'group': row.group.title,
+            'auditory': row.auditory.title,
+            'type': row.lesson_type_id,
+            'date': str(row.date),
+        })
+    return json.dumps(data)
+
+
+def get_semester_schedule_request(group):
+    rows = Lesson.objects.filter(group=group)
+    data = []
+    for row in rows:
+        data.append({
+            'title': row.subject.subj_full,
+            'teacher': row.teacher.name,
+            'auditory': row.auditory.title,
+            'type': row.lesson_type_id,
+            'date': str(row.date),
+            'subGroup': row.sub_group,
+            'weekDay': row.date.weekday(),
+            'number': row.number
+        })
+    return json.dumps(data)
