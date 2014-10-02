@@ -64,13 +64,13 @@ class Parser():
             f.write('Error: ID: ' + str(self.id) + 'URL: ' + self.url + '\n')
             f.close()
             return
-        f.write('Success: ID: ' + str(self.id) + 'URL: ' + self.url + '\n')
+        f.write('Success:' + str(datetime.datetime) + ' ID: ' + str(self.id) + 'URL: ' + self.url + '\n')
         f.close()
         rb = xlrd.open_workbook(file_contents=xls.read())
 
         if xls.info().getheader('Content-Type') != 'application/vnd.ms-excel':
             f = open('e:\errors.txt', 'w')
-            f.write('ID: ' + self.id + 'type')
+            f.write(str(datetime.datetime) + ' ' + 'ID: ' + self.id + 'type')
             f.close()
             return
 
