@@ -43,7 +43,6 @@ class Updater:
         for group in groups:
             group_id = self.find_group(group[0])
             if group_id != -1:
-                Lesson.objects.filter(group_id=group_id).delete()
                 self.parse_group(group_id, group[1])
             else:
                 Group(

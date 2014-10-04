@@ -119,22 +119,27 @@ var schedule = (function () {
             schedule : {
                 getData: function (data) {
                     console.log(data);
-                    var self = this,
-                        i, j, k,
+                    var i, j, k,
                         len,
                         table = '';
                     for (i = 0; i < 6; i += 1) {
                         table += '<table class="tableday table table-bordered table-striped table-condensed">' +
                             '<tr><td colspan="2" class="week-day-header">' + dayOfWeek[i] + '</td></tr>';
-                        for (j = 0; j < 7; j += 1) {
-                            table += '<tr><td class="lesson-number">' + (j + 1) + '</td><td class="tablerow ' + (data[i][j].length ? type[data[i][j][0].type].class : '') + '">';
-                            len = data[i][j].length;
-                            for (k = 0; k < len; k += 1) {
-                                table += '<div class="subgroup-lesson"><div class="title">' + data[i][j][k].title + '</div>';
-                                table += '<div class="teacher">' + (data[i][j][k].teacher ? data[i][j][k].teacher : data[i][j][k].group) + ' ' + type[data[i][j][k].type].title + '</div>';
-                                table += '<div class="auditory">' + (data[i][j][k].subGroup == 0 ? '' : 'Подгруппа ' + data[i][j][k].subGroup + ' ') + data[i][j][k].auditory + '</div></div>';
+                        if (data.hasOwnProperty(i)) {
+                            for (j = 0; j < 7; j += 1) {
+                                if (data[i].hasOwnProperty(j)) {
+                                    table += '<tr><td class="lesson-number">' + (j + 1) + '</td><td class="tablerow ' + (data[i][j].length ? type[data[i][j][0].type].class : '') + '">';
+                                    len = data[i][j].length;
+                                    for (k = 0; k < len; k += 1) {
+                                        table += '<div class="subgroup-lesson"><div class="title">' + data[i][j][k].title + '</div>';
+                                        table += '<div class="teacher">' + (data[i][j][k].teacher ? data[i][j][k].teacher : data[i][j][k].group) + ' ' + type[data[i][j][k].type].title + '</div>';
+                                        table += '<div class="auditory">' + (data[i][j][k].subGroup == 0 ? '' : 'Подгруппа ' + data[i][j][k].subGroup + ' ') + data[i][j][k].auditory + '</div></div>';
+                                    }
+                                    table += '</td></tr>';
+                                }
                             }
-                            table += '</td></tr>';
+                        } else {
+                            table += '<tr><td colspan="2">Занятий нет</td></tr>';
                         }
                         table += '</table>'
                     }

@@ -20,8 +20,12 @@ class GetSchedule:
         start_date = response_date - datetime.timedelta(days=response_date.weekday())
         end_date = start_date + datetime.timedelta(days=6)
         rows = Lesson.objects.filter(group_id=self.group, date__range=(start_date, end_date))
-        data = [[[] for x in xrange(7)] for y in xrange(6)]
+        data = {}
         for row in rows:
+            if not row.date.weekday() in data:
+                data[row.date.weekday()] = {}
+            if not row.number - 1 in data[row.date.weekday()]:
+                data[row.date.weekday()][row.number - 1] = []
             data[row.date.weekday()][row.number - 1].append({
                 'title': row.subject.subj_full,
                 'teacher': row.teacher.name,
