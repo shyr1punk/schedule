@@ -48,6 +48,7 @@ class Updater:
                 Group(
                     title=group[0],
                     course=self.detect_course(group[1]),
+                    group_num=self.detect_group(group[1]),
                     spec=Speciality.objects.get(id=self.detect_spec(group[1])),
                     updated=datetime.now(),
                     link=group[1],
@@ -96,6 +97,10 @@ class Updater:
     @staticmethod
     def detect_course(url):
         return int(url[url.find('-') - 1])
+
+    @staticmethod
+    def detect_group(url):
+        return int(url[url.find('-') + 1])
 
     @staticmethod
     def get_url(group_id):

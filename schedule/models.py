@@ -37,14 +37,15 @@ class Speciality(models.Model):
 class Group(models.Model):
     title = models.CharField(max_length=20)
     course = models.IntegerField()
+    group_num = models.IntegerField()
     spec = models.ForeignKey(Speciality)
     updated = models.DateTimeField(null=True, blank=True, editable=False)
     link = models.CharField(max_length=200)
     etag = models.DateTimeField(null=True, blank=True, editable=False)
 
     def __unicode__(self):
-        return u'ID: %d, Title: %s, course: %s, speciality: %s' % \
-               (self.id, self.title, self.course, self.spec.spec_short)
+        return u'ID: %d, Title: %s, course: %s, group number: %s, speciality: %s' % \
+               (self.id, self.title, self.course, self.group_num, self.spec.spec_short)
 
 
 class Teacher(models.Model):

@@ -74,7 +74,7 @@ class GetGroups:
         self.id = int(ID)
 
     def response(self):
-        rows = Group.objects.filter(spec_id=self.id)
+        rows = Group.objects.filter(spec_id=self.id).order_by('course', 'group_num')
         data = []
         for row in rows:
             data.append({
@@ -130,5 +130,19 @@ def get_semester_schedule_request(group):
             'subGroup': row.sub_group,
             'weekDay': row.date.weekday(),
             'number': row.number
+        })
+    return json.dumps(data)
+
+
+def get_groups_list():
+    rows = Group.objects.all().order_by('spec', 'course', 'group_num')
+    data = []
+    for row in rows:
+        data.append({
+            'id': row.id,
+            'specId': row.spec.id,
+            'facId': row.spec.faculty_id,
+            'course': row.course,
+            'title': row.title
         })
     return json.dumps(data)
