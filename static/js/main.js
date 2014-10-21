@@ -9,30 +9,46 @@ var schedule = (function () {
     var instance;
 
     function init() {
-        var date = new Date();
+        var datePicker = $('.input-group.date'),
+            lastGroup,
+            lastTeacher,
+            date;
         /**
          * Обработчик выбора преподавателя
          */
         $('#teachers-list').change(function() {
             'use strict';
-            var d = new Date(),
-                date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate(),
-                teacherID = $('#teachers-list :selected').val();
+            var teacherID = $('#teachers-list :selected').val();
             if (teacherID) {
-                $.getJSON('schedule/teacher' + teacherID + '/' + date, function (data) {
+                lastTeacher = teacherID;
+                lastGroup = 0;
+                $.getJSON('schedule/teacher' + teacherID + '/' + getDateToUrl(date), function (data) {
                     General.schedule.getData(data);
                 });
             }
         });
 
-        $('.input-group.date').datepicker({
+        datePicker.datepicker({
+            format: 'dd.mm.yyyy',
             todayBtn: true,
             language: "ru",
             calendarWeeks: true,
             todayHighlight: true
         });
+
+        datePicker.datepicker('update', new Date());
+        date = datePicker.datepicker('getDate');
+
         $('.input-group.date input').change(function (val) {
-            console.log(val);
+            date = datePicker.datepicker('getDate');
+            if (lastGroup) {
+                General.menu.getSchedule(lastGroup);
+            }
+            if (lastTeacher) {
+                $.getJSON('schedule/teacher' + lastTeacher + '/' + getDateToUrl(date), function (data) {
+                    General.schedule.getData(data);
+                });
+            }
         });
 
 
@@ -110,7 +126,8 @@ var schedule = (function () {
                     });
                 },
                 getSchedule: function (group) {
-                    this.group = group;
+                    lastGroup = group;
+                    lastTeacher = 0;
                     $.getJSON('schedule/group' + group + '/' + getDateToUrl(date), function (data) {
                         General.schedule.getData(data);
                     });
@@ -118,7 +135,6 @@ var schedule = (function () {
             },
             schedule : {
                 getData: function (data) {
-                    console.log(data);
                     var i, j, k,
                         len,
                         table = '';
