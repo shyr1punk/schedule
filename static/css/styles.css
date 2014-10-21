@@ -90,6 +90,12 @@ th {text-align:center}
 }
 
 #week-schedule-inner {
-    width: 70%;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+#sidebar {
+    max-width: 800px;
     margin: 0 auto;
 }
