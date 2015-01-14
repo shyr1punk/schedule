@@ -1,0 +1,7 @@
+Django
+MySQL-python
+xlrd
+beautifulsoup4
+djangorestframework
+markdown
+django-filter
