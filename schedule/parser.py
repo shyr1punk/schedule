@@ -48,12 +48,13 @@ def week_even(year, month, day):
     return [u'В', u'Н'][datetime.date(year, month, day).isocalendar()[1] % 2]
 
 
-class Parser():
+class Parser:
 
     def __init__(self, group_id, url):
         self.id = group_id
         self.url = fixurl(url)
-        self.year = 2014
+        # TODO: fix year
+        self.year = 2015
         self.lessons_list = []
 
     def parse(self):
