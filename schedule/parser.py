@@ -57,7 +57,8 @@ class Parser():
         self.lessons_list = []
 
     def parse(self):
-        f = open('e:/errors.txt', 'a')
+        error_file = '/home/shyr1punk/errors.txt'
+        f = open(error_file, 'a')
         try:
             xls = urllib2.urlopen(self.url)
         except ValueError:
@@ -69,7 +70,7 @@ class Parser():
         rb = xlrd.open_workbook(file_contents=xls.read())
 
         if xls.info().getheader('Content-Type') != 'application/vnd.ms-excel':
-            f = open('e:\errors.txt', 'w')
+            f = open(error_file, 'w')
             f.write(str(datetime.datetime) + ' ' + 'ID: ' + self.id + 'type')
             f.close()
             return

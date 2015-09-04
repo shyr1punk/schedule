@@ -45,6 +45,19 @@ class Updater:
 
     def get_groups_list(self):
         self.get_xls_files_url()
+        for group in self.groups:
+            group_id = self.find_group(group['title'])
+            if group_id != -1:
+                self.parse_group(group_id, group['url'])
+            else:
+                Group(
+                    title=group['title'],
+                    course=self.detect_course(group['url']),
+                    group_num=self.detect_group(group['url']),
+                    spec=Speciality.objects.get(id=self.detect_spec(group['url'])),
+                    updated=datetime.now(),
+                    link=group['url'],
+                ).save()
         return self.groups
 
     def parse_schedule_html_page(self, xls_files_page):
@@ -64,22 +77,7 @@ class Updater:
                 url = self.site_name + next_page.get('href')
             else:
                 break
-    pass
-    # for group in groups:
-    #     group_id = self.find_group(group[0])
-    #     if group_id != -1:
-    #         self.parse_group(group_id, group[1])
-    #     else:
-    #         Group(
-    #             title=group[0],
-    #             course=self.detect_course(group[1]),
-    #             group_num=self.detect_group(group[1]),
-    #             spec=Speciality.objects.get(id=self.detect_spec(group[1])),
-    #             updated=datetime.now(),
-    #             link=group[1],
-    #         ).save()
-    #
-    # return 0
+
 
     @staticmethod
     def parse_group(group_id, url):
