@@ -1,60 +1,85 @@
 # -*- coding: utf-8 -*-
-__author__ = 'shyr1punk'
-
 from datetime import datetime
 from schedule.models import Group, Lesson, Speciality
 from bs4 import BeautifulSoup
 import parser
 import urllib2
+from django.utils.encoding import iri_to_uri
+from django.utils.http import urlquote
+import re
 
 
 class Updater:
     def __init__(self):
-        pass
+        self.specialities = Speciality.objects.all()
+        self.xls_files_page_urls = []
+        self.groups = []
+        self.site_name = 'http://mstuca.ru'
+
+    @staticmethod
+    def get_absolute_url(url):
+        return iri_to_uri(urlquote(url))
+
+    def get_xls_files_page_urls(self):
+        base_url = '/students/schedule/'
+        for speciality in self.specialities:
+            if speciality.faculty.id == 1:
+                faculty_url = speciality.faculty.fac_full
+            else:
+                faculty_url = speciality.faculty.fac_full + " (" + speciality.faculty.fac_short + ")"
+            page_url = base_url + faculty_url + '/' + speciality.spec_short
+            self.xls_files_page_urls.append({
+                'url': page_url,
+                'spec_id': speciality.id,
+                'faculty_id': speciality.faculty_id
+            })
+        return self.xls_files_page_urls
+
+    def get_xls_files_url(self):
+        for xls_files_page in self.get_xls_files_page_urls():
+            self.parse_schedule_html_page(xls_files_page)
 
     @staticmethod
     def get_group(group_id):
         return Group.objects.get(id=group_id)
 
-    @staticmethod
-    def get_groups_list():
-        return Group.objects.all()
+    def get_groups_list(self):
+        self.get_xls_files_url()
+        return self.groups
 
-    def auto_updater(self):
-        groups = []
-
-        site_name = 'http://www.mstuca.ru'
-        url = site_name + '/students/schedule/?content=.xls&timestamp_datesel=&timestamp_days=&timestamp_from=' \
-            '&timestamp_to=&doctype=acf489b4&%3FTAGS=&user_user_input=&user_user_input=&FILE_SIZE_from=&FILE_SIZE_to=' \
-            '&FILE_SIZE_multiply=b&WF_LOCK_STATUS=&filter=%CD%E0%E9%F2%E8&clear_filter='
+    def parse_schedule_html_page(self, xls_files_page):
+        url = xls_files_page['url']
 
         while 1:
-
-            html = BeautifulSoup(urllib2.urlopen(url))
-
+            absolute_url = self.site_name + self.get_absolute_url(url)
+            html = BeautifulSoup(urllib2.urlopen(absolute_url))
             for link in html.find_all(class_='element-title'):
-                groups.append([link['data-bx-title'].encode('utf-8').replace('.xls', ''),
-                               link['data-bx-src'].encode('utf-8').replace('?showInViewer=1', '')])
+                if re.search('.xls', link['data-bx-title'].encode('utf-8')):
+                    self.groups.append({
+                        'title': link['data-bx-title'].encode('utf-8').replace('.xls', ''),
+                        'url': link['data-bx-src'].encode('utf-8').replace('?showInViewer=1', '')
+                    })
             next_page = html.find(class_='modern-page-next')
             if next_page:
-                url = site_name + next_page.get('href')
+                url = self.site_name + next_page.get('href')
             else:
                 break
-        for group in groups:
-            group_id = self.find_group(group[0])
-            if group_id != -1:
-                self.parse_group(group_id, group[1])
-            else:
-                Group(
-                    title=group[0],
-                    course=self.detect_course(group[1]),
-                    group_num=self.detect_group(group[1]),
-                    spec=Speciality.objects.get(id=self.detect_spec(group[1])),
-                    updated=datetime.now(),
-                    link=group[1],
-                ).save()
-
-        return 0
+    pass
+    # for group in groups:
+    #     group_id = self.find_group(group[0])
+    #     if group_id != -1:
+    #         self.parse_group(group_id, group[1])
+    #     else:
+    #         Group(
+    #             title=group[0],
+    #             course=self.detect_course(group[1]),
+    #             group_num=self.detect_group(group[1]),
+    #             spec=Speciality.objects.get(id=self.detect_spec(group[1])),
+    #             updated=datetime.now(),
+    #             link=group[1],
+    #         ).save()
+    #
+    # return 0
 
     @staticmethod
     def parse_group(group_id, url):

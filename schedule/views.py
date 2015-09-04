@@ -4,18 +4,18 @@ __author__ = 'shyr1punk'
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
-import updater
+from updater import Updater
 import requests
 
 
 def update_groups(request):
-    upd = updater.Updater()
-    groups = upd.get_groups_list()
+    upd = Updater()
+    urls = upd.get_xls_files_url()
     return render_to_response('updategroups.html', locals())
 
 
 def insert_group(request, group_id):
-    upd = updater.Updater()
+    upd = Updater()
     table = upd.parse_group(group_id, upd.get_url(group_id))
     return render_to_response('insertgroup.html', locals())
 
@@ -31,8 +31,8 @@ def get_json(request):
 
 
 def auto_updater(request):
-    updater_class = updater.Updater()
-    result = updater_class.auto_updater()
+    upd = Updater()
+    result = upd.get_groups_list()
     return render_to_response('autoupdateresult.html', locals())
 
 

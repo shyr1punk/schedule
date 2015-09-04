@@ -4,6 +4,8 @@
     <title></title>
 </head>
 <body>
-    {{ result }}
+    {% for group in result %}
+        <a style="display: block;" href="{{ group.url }}">{{ group.title }}</a>
+    {% endfor %}
 </body>
 </html>
