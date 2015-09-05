@@ -2,11 +2,12 @@
 __author__ = 'shyr1punk'
 
 import datetime
-import xlrd
 import urllib2
 import urlparse
 import urllib
-from schedule.models import Group, Lesson, Subject, Teacher, Type, Auditory
+
+import xlrd
+from schedule_app.models import Group, Lesson, Subject, Teacher, Type, Auditory
 
 
 def fixurl(url):

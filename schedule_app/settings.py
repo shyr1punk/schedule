@@ -1,4 +1,4 @@
-# Django settings for schedulenew project.
+# Django settings for schedule_app project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -11,10 +11,10 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'schedule',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': 'django',
+        'USER': 'schedule',
         'PASSWORD': 'schedule',
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
@@ -62,8 +62,8 @@ MEDIA_URL = ''
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
 #STATIC_ROOT = '/var/www/shyr1punk/data/www/schedule.fvds.ru/staticfiles/'
-#STATIC_ROOT = '/home/shyr1punk/PycharmProjects/schedulenew/staticfiles/'
-STATIC_ROOT = 'C:/USers/shyr1punk/PycharmProjects/schedule/staticfiles/'
+STATIC_ROOT = '/home/shyr1punk/projects/schedule/staticfiles/'
+#STATIC_ROOT = 'C:/USers/shyr1punk/PycharmProjects/schedule/staticfiles/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -71,8 +71,8 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    #'/home/shyr1punk/PycharmProjects/schedulenew/static/',
-    'C:/Users/shyr1punk/PycharmProjects/schedule/static/',
+    '/home/shyr1punk/projects/schedule/static/',
+    #'C:/Users/shyr1punk/PycharmProjects/schedule/static/',
     #'/var/www/shyr1punk/data/www/schedule.fvds.ru/static/',
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
@@ -107,10 +107,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'schedulenew.urls'
+ROOT_URLCONF = 'schedule_app.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'schedulenew.wsgi.application'
+WSGI_APPLICATION = 'schedule_app.wsgi.application'
 
 import os
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\','/'),)
@@ -126,7 +126,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
-    'schedule',
+    'schedule_app',
 )
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

@@ -4,8 +4,9 @@ __author__ = 'shyr1punk'
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
-from updater import Updater
-import requests
+
+from schedule_app.updater import Updater
+from schedule_app import requests
 
 
 def update_groups(request):

@@ -4,7 +4,7 @@ from __builtin__ import str
 __author__ = 'shyr1punk'
 
 import datetime
-from schedule.models import Lesson, Faculty, Speciality, Group, Teacher
+from schedule_app.models import Lesson, Faculty, Speciality, Group, Teacher
 import json
 
 

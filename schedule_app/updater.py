@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
-from schedule.models import Group, Lesson, Speciality
 from bs4 import BeautifulSoup
-import parser
 import urllib2
+import re
+
 from django.utils.encoding import iri_to_uri
 from django.utils.http import urlquote
-import re
+
+from schedule_app.models import Group, Lesson, Speciality
+from schedule_app import parser
 
 
 class Updater:

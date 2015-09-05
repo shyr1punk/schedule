@@ -2,7 +2,8 @@
 __author__ = 'shyr1punk'
 
 from django.contrib import admin
-from schedule.models import Faculty, Speciality, Group, Teacher, Subject, Lesson, Type, Auditory
+
+from schedule_app.models import Faculty, Speciality, Group, Teacher, Subject, Lesson, Type, Auditory
 
 admin.site.register(Faculty)
 admin.site.register(Speciality)

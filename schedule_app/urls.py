@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
-import schedule.views as view
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+import schedule_app.views as view
+
 
 
 # Uncomment the next two lines to enable the admin:
@@ -9,8 +11,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'schedulenew.views.home', name='home'),
-    # url(r'^schedulenew/', include('schedulenew.foo.urls')),
+    # url(r'^$', 'schedule_app.views.home', name='home'),
+    # url(r'^schedule_app/', include('schedule_app.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
