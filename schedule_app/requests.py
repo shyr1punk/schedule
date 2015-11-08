@@ -59,7 +59,8 @@ def get_specialities(faculty_id):
         data.append({
             'id': row.id,
             'full': row.spec_full,
-            'short': row.spec_short
+            'short': row.spec_short,
+            'facultyId': row.faculty_id
         })
     return data
 
@@ -74,7 +75,8 @@ def get_groups(speciality_id):
     for row in rows:
         data.append({
             'id': row.id,
-            'title': row.title
+            'title': row.title,
+            'specialityId': row.spec.id
         })
     return data
 
