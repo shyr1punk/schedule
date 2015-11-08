@@ -4,10 +4,18 @@ __author__ = 'shyr1punk'
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
+import json
 
 from schedule_app.updater import Updater
 from schedule_app import requests
 
+def get_initial_data(request):
+    initial_data = {
+        'faculties': requests.get_faculties(),
+        'specialities': requests.get_specialities(None),
+        'groups': requests.get_groups(None),
+    }
+    return HttpResponse(json.dumps(initial_data), content_type="application/json")
 
 def update_groups(request):
     upd = Updater()
@@ -43,25 +51,19 @@ def index(request):
 
 
 def get_faculties(request):
-    faculties = requests.GetFaculties()
-    data = faculties.response()
-    return HttpResponse(data, content_type="application/json")
+    return HttpResponse(json.dumps(requests.get_faculties()), content_type="application/json")
 
 
 def get_spec(request, faculty_id):
-    specialities = requests.GetSpecialities(faculty_id)
-    data = specialities.response()
-    return HttpResponse(data, content_type="application/json")
+    return HttpResponse(json.dumps(requests.get_specialities(faculty_id)), content_type="application/json")
 
 
 def get_groups(request, speciality_id):
-    groups = requests.GetGroups(speciality_id)
-    data = groups.response()
-    return HttpResponse(data, content_type="application/json")
+    return HttpResponse(json.dumps(requests.get_groups(speciality_id)), content_type="application/json")
 
 
 def get_teachers_list(request):
-    return HttpResponse(requests.get_teachers_list_json(), content_type="application/json")
+    return HttpResponse(json.dumps(requests.get_teachers_list()), content_type="application/json")
 
 
 def get_teacher_schedule(request, teacher_id, year, month, day):

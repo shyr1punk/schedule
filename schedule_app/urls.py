@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^updategroups/$', view.update_groups),
+    url(r'^init/$', view.get_initial_data),
     url(r'^insertGroup/id(\d{1,4})/$', view.insert_group),
     url(r'^schedule/group(\d{1,4})/(\d{2,4})/(\d{1,2})/(\d{1,2})/$', view.get_schedule),
     url(r'^schedule/teacher(\d{1,4})/(\d{2,4})/(\d{1,2})/(\d{1,2})/$', view.get_teacher_schedule),

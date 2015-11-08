@@ -37,67 +37,57 @@ class GetSchedule:
         return json.dumps(data)
 
 
-class GetFaculties:
-    def __init__(self):
-        pass
-
-    def response(self):
-        rows = Faculty.objects.all()
-        data = []
-        for row in rows:
-            data.append({
-                'id': row.id,
-                'full': row.fac_full,
-                'short': row.fac_short
-            })
-        return json.dumps(data)
+def get_faculties():
+    rows = Faculty.objects.all()
+    data = []
+    for row in rows:
+        data.append({
+            'id': row.id,
+            'full': row.fac_full,
+            'short': row.fac_short
+        })
+    return data
 
 
-class GetSpecialities:
-    def __init__(self, ID):
-        self.id = int(ID)
-
-    def response(self):
-        rows = Speciality.objects.filter(faculty_id=self.id)
-        data = []
-        for row in rows:
-            data.append({
-                'id': row.id,
-                'full': row.spec_full,
-                'short': row.spec_short
-            })
-        return json.dumps(data)
-
-
-class GetGroups:
-    def __init__(self, ID):
-        self.id = int(ID)
-
-    def response(self):
-        rows = Group.objects.filter(spec_id=self.id).order_by('course', 'group_num')
-        data = []
-        for row in rows:
-            data.append({
-                'id': row.id,
-                'title': row.title
-            })
-
-        return json.dumps(data)
+def get_specialities(faculty_id):
+    if faculty_id == None:
+        rows = Speciality.objects.all()
+    else:
+        rows = Speciality.objects.filter(faculty_id=faculty_id)
+    data = []
+    for row in rows:
+        data.append({
+            'id': row.id,
+            'full': row.spec_full,
+            'short': row.spec_short
+        })
+    return data
 
 
-def get_teachers_list_json():
-    rows = Teacher.objects.all()
+
+def get_groups(speciality_id):
+    if speciality_id == None:
+        rows = Group.objects.all().order_by('spec', 'course', 'group_num')
+    else:
+        rows = Group.objects.filter(spec_id=speciality_id).order_by('course', 'group_num')
+    data = []
+    for row in rows:
+        data.append({
+            'id': row.id,
+            'title': row.title
+        })
+    return data
+
+
+def get_teachers_list():
+    rows = Teacher.objects.all().order_by("name")
     data = []
     for row in rows:
         data.append({
             'id': row.id,
             'name': row.name
         })
-    return json.dumps(data)
-
-
-def get_teachers_list():
-    return Teacher.objects.order_by("name")
+    return data
 
 
 def get_teacher_schedule_request(teacher_id, year, month, day):
